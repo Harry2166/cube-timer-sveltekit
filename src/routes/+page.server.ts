@@ -23,20 +23,7 @@ export const actions: Actions = {
 	},
 	updateScrambleDB: async (event) => {
 		const data = await event.request.json();
-		await db.insert(table.scrambles).values({ scramble: generateRandomSequence(25), userId: data.user_id, timeRecord: data.timeRecorded, time: data.time});
+		await db.insert(table.scrambles).values({ scramble: data.scramble, userId: data.user_id, timeRecord: data.timeRecorded, time: data.time});
 		return { success: true };
 	}
 };
-
-// this is just a temporary thing to put for the scrambles
-function generateRandomSequence(length: number) {
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'; // Alphabet
-	let result = '';
-
-	for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * letters.length);
-    result += letters[randomIndex];
-	}
-
-	return result;
-}

@@ -3,12 +3,13 @@
 	import { createTimer } from "./state.svelte"
 	import type { PageServerData } from './$types';
 	let { data }: { data: PageServerData } = $props();
+	import { onMount } from "svelte";
 	const time = createTimer();
 	let timerStart: boolean = $state(false)
 	let timeAtStart: number = 0
 	let timeAtEnd: number = 0
-
-
+	let scramble: string = $state("")
+	
 	$effect(() => {
 		if (timerStart) {
 			timeAtStart = new Date().getTime()
@@ -28,15 +29,29 @@
 		if (event.key == " ") {
 			if (timerStart) {
 				timeAtEnd = new Date().getTime()
-				await time.updateScrambleDB(timeAtStart, timeAtEnd, data.user.id)
+				await time.updateScrambleDB(timeAtStart, timeAtEnd, data.user.id, scramble)
+				await fetchScrambleForEvent("333")
 		}
 	}
 }
+
+    // Function to fetch a new scramble for the specified event
+    async function fetchScrambleForEvent(event: string): Promise<void> {
+        const { randomScrambleForEvent } = await import('https://cdn.cubing.net/v0/js/cubing/scramble');
+        const result = await randomScrambleForEvent(event);
+        scramble = result.toString(); // Update the scramble
+    }
+
+    // On initial mount, generate the first scramble
+    onMount(async () => {
+        await fetchScrambleForEvent("333");
+    });
 
 </script>
 
 <h1>Cube Timer Made With SvelteKit</h1>
 <h2>Welcome {data.user.username}!</h2>
+<div>Scramble: {scramble} </div>
 <div>The timer has started: {timerStart}</div>
 {#if !timerStart}
 	<div>Time: {time.value.minutes}:{time.value.seconds}:{time.value.miliseconds}</div>
