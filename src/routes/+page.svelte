@@ -1,6 +1,8 @@
 
 <script lang="ts">
-	import { createTimer } from "./state.svelte";
+	import { createTimer } from "./state.svelte"
+	import type { PageServerData } from './$types';
+	let { data }: { data: PageServerData } = $props();
 	const time = createTimer();
 	let timerStart: boolean = $state(false)
 	let timeAtStart: number = 0
@@ -27,10 +29,14 @@
 </script>
 
 <h1>Cube Timer Made With SvelteKit</h1>
+<h2>Welcome {data.user.username}!</h2>
 <div>The timer has started: {timerStart}</div>
 {#if !timerStart}
 	<div>Time: {time.value.minutes}:{time.value.seconds}:{time.value.miliseconds}</div>
 {:else}
 	<div>You are solving...</div>
 {/if}
+<form method="post" action="?/logout">
+	<button>Sign out</button>
+</form>
 <svelte:window onkeyup={handleKeyUp} />
