@@ -35,6 +35,25 @@ export function createTimer() {
         time.seconds = 0
         time.minutes = 0
     }
+	
+    async function updateScrambleDB(startTime: number, endTime: number, user_id: string){
+        setTime(startTime, endTime)
+		const response = await fetch('?/updateScrambleDB', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: JSON.stringify({
+				scramble: 'example scramble',
+				timeRecorded: endTime,
+				time: `${time.minutes}:${time.seconds}:${time.miliseconds}`,
+				user_id: user_id,
+			}),
+		});
+		if (!response.ok) {
+			console.error('Failed to update scramble DB', await response.text());
+		} else {
+			console.log('Scramble DB updated successfully');
+		}           
+	}
 
 	return {
 		get value() {
@@ -42,6 +61,6 @@ export function createTimer() {
 		},
         increment,
         reset,
-        setTime
-	}
+        updateScrambleDB
+    }
 }

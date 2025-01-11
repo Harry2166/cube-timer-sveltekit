@@ -8,23 +8,30 @@
 	let timeAtStart: number = 0
 	let timeAtEnd: number = 0
 
-	function handleKeyUp(event: KeyboardEvent) {
-		if (event.key == " ") {
-			if (!timerStart) {
-				time.reset()
-			}
-            timerStart = !timerStart
-		}
-	}
 
 	$effect(() => {
 		if (timerStart) {
 			timeAtStart = new Date().getTime()
-		} else {
-			timeAtEnd = new Date().getTime()
-			time.setTime(timeAtStart, timeAtEnd)
-		}
+		} 
 	})
+
+	async function handleKeyUp(event: KeyboardEvent) {
+		if (event.key == " ") {
+			if (!timerStart) {
+				time.reset()
+			}
+			timerStart = !timerStart
+		}
+	}
+	
+	async function handleKeyDown(event: KeyboardEvent) {
+		if (event.key == " ") {
+			if (timerStart) {
+				timeAtEnd = new Date().getTime()
+				await time.updateScrambleDB(timeAtStart, timeAtEnd, data.user.id)
+		}
+	}
+}
 
 </script>
 
@@ -39,4 +46,4 @@
 <form method="post" action="?/logout">
 	<button>Sign out</button>
 </form>
-<svelte:window onkeyup={handleKeyUp} />
+<svelte:window onkeyup={handleKeyUp} onkeydown={handleKeyDown} />

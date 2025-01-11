@@ -21,7 +21,7 @@ export const scrambles = sqliteTable('scrambles', {
 		.notNull()
 		.references(() => user.id),
 	time: text('time').notNull(),
-	timeRecord: integer('timeRecorded', {mode: 'timestamp'}).notNull()
+	timeRecord: integer('timeRecorded').notNull()
 });
 
 export type Session = typeof session.$inferSelect;
