@@ -35,14 +35,12 @@
 	}
 }
 
-    // Function to fetch a new scramble for the specified event
     async function fetchScrambleForEvent(event: string): Promise<void> {
         const { randomScrambleForEvent } = await import('https://cdn.cubing.net/v0/js/cubing/scramble');
         const result = await randomScrambleForEvent(event);
-        scramble = result.toString(); // Update the scramble
+        scramble = result.toString(); 
     }
 
-    // On initial mount, generate the first scramble
     onMount(async () => {
         await fetchScrambleForEvent("333");
     });
