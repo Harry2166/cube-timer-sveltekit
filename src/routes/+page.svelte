@@ -52,6 +52,9 @@
 <h1>Cube Timer Made With SvelteKit</h1>
 <h2>Welcome {data.user.username}!</h2>
 <div>Scramble: {scramble} </div>
+<form>
+	<button onclick={async () => {await fetchScrambleForEvent("333")}}>New Scramble</button>
+</form>
 <div>The timer has started: {timerStart}</div>
 {#if !timerStart}
 	<div>Time: {time.value.minutes}:{time.value.seconds}:{time.value.miliseconds}</div>
