@@ -15,6 +15,15 @@ export const session = sqliteTable('session', {
 	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 });
 
+export const scrambles = sqliteTable('scrambles', {
+	scramble: text('scramble').primaryKey(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => user.id),
+	time: text('time').notNull(),
+	timeRecord: integer('timeRecorded', {mode: 'timestamp'}).notNull()
+});
+
 export type Session = typeof session.$inferSelect;
 
 export type User = typeof user.$inferSelect;
