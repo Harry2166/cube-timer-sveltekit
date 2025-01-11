@@ -23,7 +23,7 @@ export const actions: Actions = {
 	},
 	updateScrambleDB: async (event) => {
 		const data = await event.request.json();
-		await db.insert(table.scrambles).values({ scramble: data.scramble, userId: data.user_id, timeRecord: data.timeRecorded, time: data.time});
+		await db.insert(table.solves).values({ scramble: data.scramble, userId: data.user_id, timeRecord: data.timeRecorded, time: data.time});
 		return { success: true };
 	}
 };

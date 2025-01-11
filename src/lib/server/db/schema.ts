@@ -15,8 +15,8 @@ export const session = sqliteTable('session', {
 	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 });
 
-export const scrambles = sqliteTable('scramble', {
-	scrambleId: integer('scramble_id').primaryKey(),
+export const solves = sqliteTable('solves', {
+	solveId: integer('solve_id').primaryKey(),
 	scramble: text('scramble'),
 	userId: text('user_id')
 		.notNull()
