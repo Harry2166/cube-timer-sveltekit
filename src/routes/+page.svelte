@@ -6,6 +6,7 @@
 	import { onMount } from "svelte";
 	import Navbar from './Navbar.svelte'
 	import Footer from './Footer.svelte'
+	import Timer from './Timer.svelte'
 	const time = createTimer();
 	let timerStart: boolean = $state(false)
 	let timeAtStart: number = 0
@@ -54,20 +55,16 @@
 
 </script>
 <Navbar user_id={data.user.id} {scramble}></Navbar>
-<h1>Cube Timer Made With SvelteKit</h1>
-<h2>Welcome {data.user.username}!</h2>
-<button onclick={() => changeEvent("333")}>3x3</button>
-<button onclick={() => changeEvent("444")}>4x4</button>
+<!-- <h1>Cube Timer Made With SvelteKit</h1>
+<h2>Welcome {data.user.username}!</h2> -->
+<!-- <button onclick={() => changeEvent("333")}>3x3</button>
+<button onclick={() => changeEvent("444")}>4x4</button> -->
 <!-- <div>Scramble: {scramble} </div> -->
-<form>
+<!-- <form>
 	<button onclick={async () => {await fetchScrambleForEvent(eventString)}}>New Scramble</button>
-</form>
-<div>The timer has started: {timerStart}</div>
-{#if !timerStart}
-	<div>Time: {time.value.minutes}:{time.value.seconds}:{time.value.miliseconds}</div>
-{:else}
-	<div>You are solving...</div>
-{/if}
+</form> -->
+<!-- <div>The timer has started: {timerStart}</div> -->
+<Timer {timerStart} {time} />
 <form method="post" action="?/logout">
 	<button>Sign out</button>
 </form>
