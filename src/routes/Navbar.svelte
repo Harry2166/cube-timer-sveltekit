@@ -1,31 +1,27 @@
 
 <script lang="ts">
-    let { name, user_id, scramble } = $props()
+    let {user_id, scramble } = $props();
+    import { page } from '$app/state';
+    import { Navbar, NavLi, NavUl } from 'flowbite-svelte';
+    let activeUrl = $derived(page.url.pathname);
 </script>
 
-<div class="navbar">
-    <a href="/" class="navbar-selection">Home</a>
-    <!-- svelte-ignore a11y_missing_attribute -->
-    <a>{scramble}</a>
-    <a href="/profile/{user_id}" class="navbar-selection">{name}'s Profile</a>
-</div>
+<Navbar fluid={true} class="flex justify-between items-center">
+    <div class="flex items-center">
+        <NavUl {activeUrl}>
+            <NavLi href="/">Home</NavLi>
+        </NavUl>
+    </div>
 
-<style>
-    .navbar {
-        display: flex;
-        justify-content: space-between;
-        background-color: rgb(255, 255, 255);
-        color: white;
-        padding: 10px
-    }
-    
-    .navbar a {
-        color: #000000;
-        text-decoration: none;
-    }
+    <div class="flex items-center">
+        <NavUl>
+            <NavLi class="text-2xl">{scramble}</NavLi>
+        </NavUl>
+    </div>
 
-    .navbar-selection:hover {
-        color: goldenrod
-    }
-
-</style>
+    <div class="flex items-center">
+        <NavUl {activeUrl}>
+            <NavLi href="/profile/{user_id}">Profile</NavLi>
+        </NavUl>
+    </div>
+</Navbar>

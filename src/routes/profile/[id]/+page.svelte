@@ -3,6 +3,7 @@
 	import type { PageServerData } from './$types';
 	let { data }: { data: PageServerData } = $props();
 	import Navbar from '../../Navbar.svelte'
+	import Footer from '../../Footer.svelte'
 
     let solves = $state(data.solves)
     let deletedSolveIds = $state([-1])
@@ -38,7 +39,7 @@
 
 </script>
 
-<Navbar name={data.navbar_stuff[0].username} user_id={data.navbar_stuff[0].id} scramble={""}></Navbar>
+<Navbar user_id={data.navbar_stuff[0].id} scramble={""}></Navbar>
 
 {#each solves as solve}
     <div>{solve.scramble}: Recorded at {new Date(solve.timeRecord)}</div>
@@ -46,3 +47,5 @@
     <div>{solve.event}</div>
     <button onclick={async () => {deleteTime(solve.solveId)}}>Delete Time</button>
 {/each}
+
+<Footer></Footer>

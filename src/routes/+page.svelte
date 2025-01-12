@@ -5,6 +5,7 @@
 	let { data }: { data: PageServerData } = $props();
 	import { onMount } from "svelte";
 	import Navbar from './Navbar.svelte'
+	import Footer from './Footer.svelte'
 	const time = createTimer();
 	let timerStart: boolean = $state(false)
 	let timeAtStart: number = 0
@@ -52,7 +53,7 @@
     });
 
 </script>
-<Navbar name={data.user.username} user_id={data.user.id} {scramble}></Navbar>
+<Navbar user_id={data.user.id} {scramble}></Navbar>
 <h1>Cube Timer Made With SvelteKit</h1>
 <h2>Welcome {data.user.username}!</h2>
 <button onclick={() => changeEvent("333")}>3x3</button>
@@ -71,3 +72,4 @@
 	<button>Sign out</button>
 </form>
 <svelte:window onkeyup={handleKeyUp} onkeydown={handleKeyDown} />
+<Footer></Footer>
