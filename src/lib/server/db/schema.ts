@@ -16,7 +16,8 @@ export const session = sqliteTable('session', {
 });
 
 export const events = sqliteTable('events', {
-	name: text('event_name').primaryKey()
+	id: text('event_id').primaryKey(),
+	name: text('event_name')
 })
 
 export const solves = sqliteTable('solves', {
@@ -27,8 +28,8 @@ export const solves = sqliteTable('solves', {
 		.references(() => user.id),
 	time: text('time').notNull(),
 	timeRecord: integer('timeRecorded').notNull(),
-	event: text('event_name')
-		.references(() => events.name)
+	event: text('event_id')
+		.references(() => events.id)
 });
 
 export type Session = typeof session.$inferSelect;
