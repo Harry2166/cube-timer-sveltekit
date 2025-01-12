@@ -36,7 +36,7 @@ export function createTimer() {
         time.minutes = 0
     }
 	
-    async function updateScrambleDB(startTime: number, endTime: number, user_id: string, scramble: string){
+    async function updateScrambleDB(startTime: number, endTime: number, user_id: string, scramble: string, event: string){
         setTime(startTime, endTime)
 		const response = await fetch('?/updateScrambleDB', {
 			method: 'POST',
@@ -46,6 +46,7 @@ export function createTimer() {
 				timeRecorded: endTime,
 				time: `${time.minutes}:${time.seconds}:${time.miliseconds}`,
 				user_id: user_id,
+                event
 			}),
 		});
 		if (!response.ok) {

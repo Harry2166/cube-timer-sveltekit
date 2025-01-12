@@ -30,7 +30,7 @@
 		if (event.key == " ") {
 			if (timerStart) {
 				timeAtEnd = new Date().getTime()
-				await time.updateScrambleDB(timeAtStart, timeAtEnd, data.user.id, scramble)
+				await time.updateScrambleDB(timeAtStart, timeAtEnd, data.user.id, scramble, eventString)
 				await fetchScrambleForEvent(eventString)
 		}
 	}

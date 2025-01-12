@@ -15,6 +15,10 @@ export const session = sqliteTable('session', {
 	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 });
 
+export const events = sqliteTable('events', {
+	name: text('event_name').primaryKey()
+})
+
 export const solves = sqliteTable('solves', {
 	solveId: integer('solve_id').primaryKey(),
 	scramble: text('scramble'),
@@ -22,9 +26,10 @@ export const solves = sqliteTable('solves', {
 		.notNull()
 		.references(() => user.id),
 	time: text('time').notNull(),
-	timeRecord: integer('timeRecorded').notNull()
+	timeRecord: integer('timeRecorded').notNull(),
+	event: text('event_name')
+		.references(() => events.name)
 });
 
 export type Session = typeof session.$inferSelect;
-
 export type User = typeof user.$inferSelect;
