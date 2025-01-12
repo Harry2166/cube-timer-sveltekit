@@ -6,6 +6,15 @@
 	import Footer from '../../Footer.svelte'
     import { Button, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, PaginationItem } from 'flowbite-svelte';
 
+    type Solve = {
+        solveId: number;
+        scramble: string | null;
+        userId: string;
+        time: string;
+        timeRecord: number;
+        event: string | null;
+    }
+
     let solves = $state(data.solves)
     let rangeOfShownSolves = $state(0)
     let shownSolves = $derived(solves.slice(rangeOfShownSolves, rangeOfShownSolves + 5))
@@ -22,15 +31,6 @@
         if(rangeOfShownSolves != 0){
             rangeOfShownSolves -= 5
         }
-    }
-
-    type Solve = {
-        solveId: number;
-        scramble: string | null;
-        userId: string;
-        time: string;
-        timeRecord: number;
-        event: string | null;
     }
 
     function isNotDeleted(solve: Solve){
@@ -81,10 +81,22 @@
             </TableBodyCell>
         </TableBodyRow>
         {/each}
+        {#if shownSolves.length != 5}
+            {#each {length: 5 - shownSolves.length} as _,i}
+            <TableBodyRow>
+                <TableBodyCell></TableBodyCell>
+                <TableBodyCell></TableBodyCell>
+                <TableBodyCell></TableBodyCell>
+                <!-- <TableBodyCell>{solve.event}</TableBodyCell> -->
+                <TableBodyCell>
+                    <Button class="opacity-0">Delete</Button>
+                </TableBodyCell>
+            </TableBodyRow>
+            {/each}
+        {/if}
     </TableBody>
 </Table>
-
-<div class="fixed bottom-80 left-1/2 transform -translate-x-1/2 z-50 flex flex-col items-center gap-2">
+<div class="flex flex-col items-center justify-center gap-2">
     <div class="text-sm text-gray-700 dark:text-gray-400">
         Showing <span class="font-semibold text-gray-900 dark:text-white">{rangeOfShownSolves + 1}</span>
         to
