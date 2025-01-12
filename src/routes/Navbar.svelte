@@ -1,11 +1,13 @@
 
 <script lang="ts">
-    let { name, user_id } = $props()
+    let { name, user_id, scramble } = $props()
 </script>
 
 <div class="navbar">
-    <a href="/">Home</a>
-    <a href="/profile/{user_id}">{name}'s Profile</a>
+    <a href="/" class="navbar-selection">Home</a>
+    <!-- svelte-ignore a11y_missing_attribute -->
+    <a>{scramble}</a>
+    <a href="/profile/{user_id}" class="navbar-selection">{name}'s Profile</a>
 </div>
 
 <style>
@@ -22,7 +24,7 @@
         text-decoration: none;
     }
 
-    .navbar a:hover {
+    .navbar-selection:hover {
         color: goldenrod
     }
 
