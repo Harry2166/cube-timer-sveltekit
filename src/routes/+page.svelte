@@ -11,6 +11,7 @@
 	import Timer from './Timer.svelte'
 	const time = createTimer();
 	let timerStart: boolean = $state(false)
+	let spacebarPressed: boolean = $state(false)
 	let timeAtStart: number = 0
 	let timeAtEnd: number = 0
 	let scramble: string = $state("")
@@ -29,6 +30,7 @@
 				time.reset()
 			}
 			timerStart = !timerStart
+			spacebarPressed = !spacebarPressed
 		}
 	}
 	
@@ -38,6 +40,10 @@
 				timeAtEnd = new Date().getTime()
 				await time.updateScrambleDB(timeAtStart, timeAtEnd, data.user.id, scramble, eventString)
 				await fetchScrambleForEvent(eventString)
+			}
+			
+			if (!spacebarPressed) {
+				spacebarPressed = !spacebarPressed
 			}
 		}
 	}
@@ -58,6 +64,8 @@
         await fetchScrambleForEvent(eventString);
     });
 
+	$inspect(spacebarPressed)
+
 </script>
 <Navbar username={data.user.username} user_id={data.user.id} {scramble}></Navbar>
 <div class="flex items-center justify-center gap-4">
@@ -69,6 +77,6 @@
 	<Button onclick={async () => {await fetchScrambleForEvent(eventString)}}>New Scramble</Button>
 </div>
 
-<Timer {timerStart} {time} />
+<Timer {timerStart} {time} {spacebarPressed}/>
 <svelte:window onkeyup={handleKeyUp} onkeydown={handleKeyDown} />
 <Footer></Footer>
