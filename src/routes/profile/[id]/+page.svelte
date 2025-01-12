@@ -4,6 +4,7 @@
 	let { data }: { data: PageServerData } = $props();
 	import Navbar from '../../Navbar.svelte'
 	import Footer from '../../Footer.svelte'
+    import { Button, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Checkbox, TableSearch } from 'flowbite-svelte';
 
     let solves = $state(data.solves)
     let deletedSolveIds = $state([-1])
@@ -41,11 +42,29 @@
 
 <Navbar user_id={data.navbar_stuff[0].id} scramble={""}></Navbar>
 
-{#each solves as solve}
-    <div>{solve.scramble}: Recorded at {new Date(solve.timeRecord)}</div>
-    <div>{solve.time}</div>
-    <div>{solve.event}</div>
-    <button onclick={async () => {deleteTime(solve.solveId)}}>Delete Time</button>
-{/each}
+<Table hoverable={true}>
+    <TableHead>
+    <TableHeadCell>Scramble</TableHeadCell>
+    <TableHeadCell>Time</TableHeadCell>
+    <TableHeadCell>Recorded At:</TableHeadCell>
+    <!-- <TableHeadCell>Event</TableHeadCell> -->
+    <TableHeadCell>
+        <span class="sr-only"></span>
+    </TableHeadCell>
+    </TableHead>
+    <TableBody tableBodyClass="divide-y">
+        {#each solves as solve}
+        <TableBodyRow>
+            <TableBodyCell>{solve.scramble}</TableBodyCell>
+            <TableBodyCell>{solve.time}</TableBodyCell>
+            <TableBodyCell>{new Date(solve.timeRecord)}</TableBodyCell>
+            <!-- <TableBodyCell>{solve.event}</TableBodyCell> -->
+            <TableBodyCell>
+                <Button onclick={async () => {deleteTime(solve.solveId)}}>Delete</Button>
+            </TableBodyCell>
+        </TableBodyRow>
+        {/each}
+    </TableBody>
+</Table>
 
 <Footer></Footer>
