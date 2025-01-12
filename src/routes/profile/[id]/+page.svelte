@@ -57,11 +57,7 @@
 
 </script>
 
-<Navbar user_id={data.navbar_stuff[0].id} scramble={""}></Navbar>
-
-<form method="post" action="?/logout">
-	<button>Sign out</button>
-</form>
+<Navbar username={data.navbar_stuff[0].username} user_id={data.navbar_stuff[0].id} scramble={""}></Navbar>
 
 <Table hoverable={true}>
     <TableHead>

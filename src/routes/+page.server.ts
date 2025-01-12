@@ -1,7 +1,8 @@
-import { redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import * as table from '$lib/server/db/schema';
 import { db } from '$lib/server/db';
+import * as auth from '$lib/server/auth';
 
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {
@@ -16,5 +17,14 @@ export const actions: Actions = {
 		await db.insert(table.events).values({ id: data.event }).onConflictDoNothing()
 		await db.insert(table.solves).values({ scramble: data.scramble, userId: data.user_id, timeRecord: data.timeRecorded, time: data.time, event: data.event});
 		return { success: true };
-	}
+	},
+	logout: async (event) => {
+		if (!event.locals.session) {
+			return fail(401);
+		}
+		await auth.invalidateSession(event.locals.session.id);
+		auth.deleteSessionTokenCookie(event);
+
+		return redirect(302, '/login');
+	},
 };
