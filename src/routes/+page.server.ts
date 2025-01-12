@@ -12,15 +12,6 @@ export const load: PageServerLoad = async (event) => {
 };
 
 export const actions: Actions = {
-	logout: async (event) => {
-		if (!event.locals.session) {
-			return fail(401);
-		}
-		await auth.invalidateSession(event.locals.session.id);
-		auth.deleteSessionTokenCookie(event);
-
-		return redirect(302, '/login');
-	},
 	updateScrambleDB: async (event) => {
 		const data = await event.request.json();
 		await db.insert(table.events).values({ id: data.event }).onConflictDoNothing()

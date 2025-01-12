@@ -67,4 +67,8 @@
     </TableBody>
 </Table>
 
+<form method="post" action="?/logout">
+	<button>Sign out</button>
+</form>
+
 <Footer></Footer>

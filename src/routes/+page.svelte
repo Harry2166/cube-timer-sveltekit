@@ -65,8 +65,5 @@
 </form> -->
 <!-- <div>The timer has started: {timerStart}</div> -->
 <Timer {timerStart} {time} />
-<form method="post" action="?/logout">
-	<button>Sign out</button>
-</form>
 <svelte:window onkeyup={handleKeyUp} onkeydown={handleKeyDown} />
 <Footer></Footer>
