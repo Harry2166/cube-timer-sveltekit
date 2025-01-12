@@ -9,6 +9,7 @@
 	let timeAtStart: number = 0
 	let timeAtEnd: number = 0
 	let scramble: string = $state("")
+	let eventString: string = $state("333")
 	
 	$effect(() => {
 		if (timerStart) {
@@ -29,8 +30,8 @@
 		if (event.key == " ") {
 			if (timerStart) {
 				timeAtEnd = new Date().getTime()
-				await time.updateScrambleDB(timeAtStart, timeAtEnd, data.user.id, scramble)
-				await fetchScrambleForEvent("333")
+				await time.updateScrambleDB(timeAtStart, timeAtEnd, data.user.id, scramble, eventString)
+				await fetchScrambleForEvent(eventString)
 		}
 	}
 }
@@ -41,17 +42,24 @@
         scramble = result.toString(); 
     }
 
+	const changeEvent = (eventChosen: string) => {
+		console.log(eventChosen)
+		eventString = eventChosen
+	}
+
     onMount(async () => {
-        await fetchScrambleForEvent("333");
+        await fetchScrambleForEvent(eventString);
     });
 
 </script>
 
 <h1>Cube Timer Made With SvelteKit</h1>
 <h2>Welcome {data.user.username}!</h2>
+<button onclick={() => changeEvent("333")}>3x3</button>
+<button onclick={() => changeEvent("444")}>4x4</button>
 <div>Scramble: {scramble} </div>
 <form>
-	<button onclick={async () => {await fetchScrambleForEvent("333")}}>New Scramble</button>
+	<button onclick={async () => {await fetchScrambleForEvent(eventString)}}>New Scramble</button>
 </form>
 <div>The timer has started: {timerStart}</div>
 {#if !timerStart}
