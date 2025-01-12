@@ -33,9 +33,9 @@
 				timeAtEnd = new Date().getTime()
 				await time.updateScrambleDB(timeAtStart, timeAtEnd, data.user.id, scramble, eventString)
 				await fetchScrambleForEvent(eventString)
+			}
 		}
 	}
-}
 
     async function fetchScrambleForEvent(event: string): Promise<void> {
         const { randomScrambleForEvent } = await import('https://cdn.cubing.net/v0/js/cubing/scramble');
