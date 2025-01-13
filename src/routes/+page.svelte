@@ -9,6 +9,7 @@
 	import Navbar from './Navbar.svelte'
 	import Footer from './Footer.svelte'
 	import Timer from './Timer.svelte'
+	import { randomScrambleForEvent } from "cubing/scramble";
 	const time = createTimer();
 	let timerStart: boolean = $state(false)
 	let spacebarPressed: boolean = $state(false)
@@ -49,7 +50,6 @@
 	}
 
     async function fetchScrambleForEvent(event: string): Promise<void> {
-        const { randomScrambleForEvent } = await import('https://cdn.cubing.net/v0/js/cubing/scramble');
         const result = await randomScrambleForEvent(event);
         scramble = result.toString(); 
     }
@@ -80,4 +80,5 @@
 
 <Timer {timerStart} {time} {spacebarPressed}/>
 <svelte:window onkeyup={handleKeyUp} onkeydown={handleKeyDown} />
-<Footer></Footer>
+
+<Footer {scramble}></Footer>
