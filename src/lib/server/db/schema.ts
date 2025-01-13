@@ -1,11 +1,12 @@
-import { boolean } from 'drizzle-orm/mysql-core';
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
 export const user = sqliteTable('user', {
 	id: text('id').primaryKey(),
-	age: integer('age'),
 	username: text('username').notNull().unique(),
-	passwordHash: text('password_hash').notNull()
+	passwordHash: text('password_hash').notNull(),
+	highestMo3: integer('mo3').notNull(),
+	highestAo5: integer('ao5').notNull(),
+	highestAo12: integer('ao12').notNull()
 });
 
 export const session = sqliteTable('session', {
