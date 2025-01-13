@@ -21,7 +21,6 @@
 	let scramble: string = $state("")
 	let eventString: string = $state("333")
 	let activeClass = 'text-green-500 dark:text-green-300 hover:text-green-700 dark:hover:text-green-500';
-
 	$effect(() => {
 		if (timerStart) {
 			timeAtStart = new Date().getTime()
@@ -59,7 +58,6 @@
     }
 
 	const changeEvent = async (eventChosen: string) => {
-		console.log("event changed!")
 		eventString = eventChosen
         await fetchScrambleForEvent(eventString);
 	}
@@ -84,6 +82,17 @@
 	</div>
 
 	<Timer {timerStart} {time} {spacebarPressed}/>
+	<div class="flex items-center justify-center flex-col">
+		{#if solves.value.length >= 3}
+			<div>Mo3: {solves.currMo3/1000}</div>
+		{/if}
+		{#if solves.value.length >= 5}
+			<div>Ao5: {solves.currAo5/1000}</div>
+		{/if}
+		{#if solves.value.length >= 12}
+			<div>Ao12: {solves.currAo12}</div>
+		{/if}
+	</div>
     <div class="absolute bottom-20 right-0">
         <Scramble {scramble}></Scramble>
     </div>

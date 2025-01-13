@@ -14,9 +14,17 @@ type Solve = {
 
 export function createSolvesArr() {
     let solves: Solve[] = $state([])
+    let currMo3: number = $state(0)
+    let currAo5: number = $state(0)
+    let currAo12: number = $state(0)
 
     function setSolves(givenSolves: Solve[]) {
         solves = givenSolves
+        if (solves.length != 0) {
+            currMo3 = trimmedAvg(solves[0].userId, 3, 0)
+            currAo5 = trimmedAvg(solves[0].userId, 5, 5)
+            currAo12 = trimmedAvg(solves[0].userId, 12, 5)
+        }
     }
 
     async function updateSolves(user_id: string) {
@@ -47,28 +55,66 @@ export function createSolvesArr() {
                 isPlusTwo : newSolveData[mapping["isPlusTwo"]],
             }
             solves.push(newSolve)
-            console.log(solves)
+            if (solves.length >= 3) {
+                updateAvg(user_id, trimmedAvg(user_id, 3, 0), 3)
+            }
+            if (solves.length >= 5) {
+                updateAvg(user_id, trimmedAvg(user_id, 5, 5), 5)
+            }
+            if (solves.length >= 3) {
+                updateAvg(user_id, trimmedAvg(user_id, 12, 5), 12)
+            }
 		}           
     }
 
     function convertToSolveTimes (num: number) {
-        let arr: number[] = $state([])
+        let arr: number[] = []
         const startingIdx: number = solves.length - num
         for (let i = startingIdx; i < solves.length; i++){
-            // converting it into miliseconds
             arr.push(solves[i].minutes * 60000 + solves[i].seconds*1000 + solves[i].ms)
         }
         return arr
     }
 
+    async function updateAvg(user_id: string, avg: number, avgNumber: number) {
+        const response = await fetch('?/updateAvg', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: JSON.stringify({
+				user_id: user_id,
+                avg: avg,
+                avgNumber: avgNumber
+			}),
+		});
+        if (!response.ok) {
+			console.error('Failed to get from Avg DB', await response.text());
+		} else {
+			console.log('Avg DB gottened');
+		}           
+    }
+
     // https://stackoverflow.com/questions/20202719/truncated-mean-javascript
-    function trimmedAvg (avgNumber: number, trimPercent: number){
+    function trimmedAvg (userId: string, avgNumber: number, trimPercent: number){
+        if (solves.length < avgNumber) {
+            return 0
+        }
         const sortedValues = convertToSolveTimes(avgNumber).sort()
         const trimCount = Math.floor(sortedValues.length * ((trimPercent / 2) * 0.01))
         const trimmedValues = sortedValues.slice(trimCount, sortedValues.length - trimCount)
-        if (!trimmedValues.length) return null
+        if (!trimmedValues.length) return 0
         const sum = trimmedValues.reduce((acc, value) => acc + value, 0)
-        return sum / trimmedValues.length
+        const value = sum / trimmedValues.length
+
+        if (avgNumber == 3) {
+            currMo3 = value
+            console.log(currMo3)
+        } else if (avgNumber == 5){
+            currAo5 = value
+        } else if (avgNumber == 12) {
+            currAo12 = value
+        }
+
+        return value
     }
 
     return {
@@ -77,7 +123,16 @@ export function createSolvesArr() {
         },
         setSolves,
         updateSolves,
-        trimmedAvg
+        trimmedAvg,
+        get currMo3() {
+            return currMo3
+        },
+        get currAo5() {
+            return currAo5
+        },
+        get currAo12() {
+            return currAo12
+        },
     }
 
 }
