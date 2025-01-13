@@ -19,8 +19,36 @@ export function createSolvesArr() {
         solves = givenSolves
     }
 
-    function updateSolves(newSolve: Solve) {
-        solves.push(newSolve)
+    async function updateSolves(user_id: string) {
+        const response = await fetch('?/getMostRecentSolve', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: JSON.stringify({
+				user_id: user_id,
+			}),
+		});
+        if (!response.ok) {
+			console.error('Failed to get from scramble DB', await response.text());
+		} else {
+			console.log('Scramble DB gottened');
+            const responseData = await response.json()
+            const newSolveData = JSON.parse(responseData.data)
+            const mapping = newSolveData[0]
+            const newSolve: Solve = {
+                solveId : newSolveData[mapping["solveId"]],
+                scramble : newSolveData[mapping["scramble"]],
+                userId : newSolveData[mapping["userId"]],
+                minutes : newSolveData[mapping["minutes"]],
+                seconds : newSolveData[mapping["seconds"]],
+                ms : newSolveData[mapping["ms"]],
+                timeRecord : newSolveData[mapping["timeRecord"]],
+                event : newSolveData[mapping["event"]],
+                isDNF : newSolveData[mapping["isDNF"]],
+                isPlusTwo : newSolveData[mapping["isPlusTwo"]],
+            }
+            solves.push(newSolve)
+            console.log(solves)
+		}           
     }
 
     function convertToSolveTimes (num: number) {
@@ -92,9 +120,6 @@ export function createTimer() {
                 event
 			}),
 		});
-		// const responseData = await response.json()
-        // console.log(responseData.data)
-        // console.log(responseData.data.tite)
         if (!response.ok) {
 			console.error('Failed to update scramble DB', await response.text());
 		} else {

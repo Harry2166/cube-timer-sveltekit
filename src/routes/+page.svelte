@@ -13,6 +13,7 @@
 	import { randomScrambleForEvent } from "cubing/scramble";
 	const time = createTimer();
 	const solves = createSolvesArr();
+	solves.setSolves(data.solves)
 	let timerStart: boolean = $state(false)
 	let spacebarPressed: boolean = $state(false)
 	let timeAtStart: number = 0
@@ -42,7 +43,7 @@
 			if (timerStart) {
 				timeAtEnd = new Date().getTime()
 				await time.updateSolvesDB(timeAtStart, timeAtEnd, data.user.id, scramble, eventString)
-				// solves.updateSolves()
+				await solves.updateSolves(data.user.id)
 				await fetchScrambleForEvent(eventString)
 			}
 			
