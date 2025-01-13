@@ -68,6 +68,10 @@
 
 	$inspect(spacebarPressed)
 
+	function roundUpto (num: number, upto: number){
+		return Number(num.toFixed(upto));
+	}
+
 </script>
 
 <div class="flex flex-col gap-4">
@@ -84,13 +88,13 @@
 	<Timer {timerStart} {time} {spacebarPressed}/>
 	<div class="flex items-center justify-center flex-col">
 		{#if solves.value.length >= 3}
-			<div>Mo3: {solves.currMo3/1000}</div>
+			<div>Mo3: {roundUpto(solves.currMo3/1000, 3)}</div>
 		{/if}
 		{#if solves.value.length >= 5}
-			<div>Ao5: {solves.currAo5/1000}</div>
+			<div>Ao5: {roundUpto(solves.currAo5/1000, 3)}</div>
 		{/if}
 		{#if solves.value.length >= 12}
-			<div>Ao12: {solves.currAo12}</div>
+			<div>Ao12: {roundUpto(solves.currAo12/1000, 3)}</div>
 		{/if}
 	</div>
     <div class="absolute bottom-20 right-0">

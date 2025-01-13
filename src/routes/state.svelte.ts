@@ -21,9 +21,12 @@ export function createSolvesArr() {
     function setSolves(givenSolves: Solve[]) {
         solves = givenSolves
         if (solves.length != 0) {
-            currMo3 = trimmedAvg(solves[0].userId, 3, 0)
-            currAo5 = trimmedAvg(solves[0].userId, 5, 5)
-            currAo12 = trimmedAvg(solves[0].userId, 12, 5)
+            console.log("this is a test")
+            currMo3 = trimmedAvg(3)
+            currAo5 = trimmedAvg(5)
+            currAo12 = trimmedAvg(12)
+            console.log("currMo3: ")
+            $inspect(currMo3)
         }
     }
 
@@ -55,14 +58,15 @@ export function createSolvesArr() {
                 isPlusTwo : newSolveData[mapping["isPlusTwo"]],
             }
             solves.push(newSolve)
+            console.log(solves)
             if (solves.length >= 3) {
-                updateAvg(user_id, trimmedAvg(user_id, 3, 0), 3)
+                updateAvg(user_id, trimmedAvg(3), 3)
             }
             if (solves.length >= 5) {
-                updateAvg(user_id, trimmedAvg(user_id, 5, 5), 5)
+                updateAvg(user_id, trimmedAvg(5), 5)
             }
             if (solves.length >= 3) {
-                updateAvg(user_id, trimmedAvg(user_id, 12, 5), 12)
+                updateAvg(user_id, trimmedAvg(12), 12)
             }
 		}           
     }
@@ -93,21 +97,20 @@ export function createSolvesArr() {
 		}           
     }
 
-    // https://stackoverflow.com/questions/20202719/truncated-mean-javascript
-    function trimmedAvg (userId: string, avgNumber: number, trimPercent: number){
+    function trimmedAvg (avgNumber: number){
         if (solves.length < avgNumber) {
             return 0
         }
-        const sortedValues = convertToSolveTimes(avgNumber).sort()
-        const trimCount = Math.floor(sortedValues.length * ((trimPercent / 2) * 0.01))
-        const trimmedValues = sortedValues.slice(trimCount, sortedValues.length - trimCount)
-        if (!trimmedValues.length) return 0
-        const sum = trimmedValues.reduce((acc, value) => acc + value, 0)
-        const value = sum / trimmedValues.length
-
+        const sortedValues = convertToSolveTimes(avgNumber)
+        const maxValue = Math.max(...sortedValues)
+        const minValue = Math.min(...sortedValues)
+        const removedValues = sortedValues.filter((num) => {
+            return minValue < num && num < maxValue
+        })
+        let value = sum(removedValues) / removedValues.length
         if (avgNumber == 3) {
+            value = (sum(sortedValues)/3)
             currMo3 = value
-            console.log(currMo3)
         } else if (avgNumber == 5){
             currAo5 = value
         } else if (avgNumber == 12) {
@@ -189,4 +192,12 @@ export function createTimer() {
         reset,
         updateSolvesDB
     }
+}
+
+function sum(arr: number[]) {
+    let sum = 0
+    for (let i = 0; i < arr.length; i++) {
+        sum += arr[i]
+    }
+    return sum
 }
