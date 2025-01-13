@@ -1,3 +1,4 @@
+import { boolean } from 'drizzle-orm/mysql-core';
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
 export const user = sqliteTable('user', {
@@ -29,7 +30,9 @@ export const solves = sqliteTable('solves', {
 	time: text('time').notNull(),
 	timeRecord: integer('timeRecorded').notNull(),
 	event: text('event_id')
-		.references(() => events.id)
+		.references(() => events.id),
+	isPlusTwo: integer('+2').notNull(),
+	isDNF: integer('DNF').notNull()
 });
 
 export type Session = typeof session.$inferSelect;
