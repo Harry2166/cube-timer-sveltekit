@@ -1,24 +1,65 @@
 
+type Solve = {
+    solveId: number;
+    scramble: string | null;
+    userId: string;
+    minutes: number;
+    seconds: number;
+    ms: number;
+    timeRecord: number;
+    event: string | null;
+    isDNF: number;
+    isPlusTwo: number;
+}
+
+export function createSolvesArr() {
+    let solves: Solve[] = $state([])
+
+    function setSolves(givenSolves: Solve[]) {
+        solves = givenSolves
+    }
+
+    function updateSolves(newSolve: Solve) {
+        solves.push(newSolve)
+    }
+
+    function convertToSolveTimes (num: number) {
+        let arr: number[] = $state([])
+        const startingIdx: number = solves.length - num
+        for (let i = startingIdx; i < solves.length; i++){
+            // converting it into miliseconds
+            arr.push(solves[i].minutes * 60000 + solves[i].seconds*1000 + solves[i].ms)
+        }
+        return arr
+    }
+
+    // https://stackoverflow.com/questions/20202719/truncated-mean-javascript
+    function trimmedAvg (avgNumber: number, trimPercent: number){
+        const sortedValues = convertToSolveTimes(avgNumber).sort()
+        const trimCount = Math.floor(sortedValues.length * ((trimPercent / 2) * 0.01))
+        const trimmedValues = sortedValues.slice(trimCount, sortedValues.length - trimCount)
+        if (!trimmedValues.length) return null
+        const sum = trimmedValues.reduce((acc, value) => acc + value, 0)
+        return sum / trimmedValues.length
+    }
+
+    return {
+        get value() {
+            return solves
+        },
+        setSolves,
+        updateSolves,
+        trimmedAvg
+    }
+
+}
+
 export function createTimer() {
 	let time = $state({
         minutes: 0,
         seconds: 0,
         miliseconds: 0
     });
-
-    function increment() {
-        // time.miliseconds += 1
-        // if (time.miliseconds == 1000) {
-        //     time.seconds += 1
-        //     time.miliseconds = 0
-        // }
-        // time.seconds += 1
-        
-        if (time.seconds == 60) {
-            time.minutes += 1
-            time.seconds = 0
-        }
-    }
 
     function setTime(startTime: number, endTime: number) {
         let result = endTime - startTime
@@ -62,7 +103,6 @@ export function createTimer() {
 		get value() {
 			return time;
 		},
-        increment,
         reset,
         updateScrambleDB
     }
