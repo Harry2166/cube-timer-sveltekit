@@ -77,9 +77,9 @@ export function createTimer() {
         time.minutes = 0
     }
 	
-    async function updateScrambleDB(startTime: number, endTime: number, user_id: string, scramble: string, event: string){
+    async function updateSolvesDB(startTime: number, endTime: number, user_id: string, scramble: string, event: string){
         setTime(startTime, endTime)
-		const response = await fetch('?/updateScrambleDB', {
+		const response = await fetch('?/updateSolvesDB', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			body: JSON.stringify({
@@ -92,7 +92,10 @@ export function createTimer() {
                 event
 			}),
 		});
-		if (!response.ok) {
+		// const responseData = await response.json()
+        // console.log(responseData.data)
+        // console.log(responseData.data.tite)
+        if (!response.ok) {
 			console.error('Failed to update scramble DB', await response.text());
 		} else {
 			console.log('Scramble DB updated successfully');
@@ -104,6 +107,6 @@ export function createTimer() {
 			return time;
 		},
         reset,
-        updateScrambleDB
+        updateSolvesDB
     }
 }

@@ -3,16 +3,18 @@ import type { Actions, PageServerLoad } from './$types';
 import * as table from '$lib/server/db/schema';
 import { db } from '$lib/server/db';
 import * as auth from '$lib/server/auth';
+import { eq } from 'drizzle-orm';
 
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {
 		return redirect(302, '/login');
 	}
+    const solves = await db.select().from(table.solves).where(eq(table.solves.userId, event.locals.user.id));
 	return { user: event.locals.user };
 };
 
 export const actions: Actions = {
-	updateScrambleDB: async (event) => {
+	updateSolvesDB: async (event) => {
 		const data = await event.request.json();
 		await db.insert(table.events).values({ id: data.event }).onConflictDoNothing()
 		await db.insert(table.solves).values({ 

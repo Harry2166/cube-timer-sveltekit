@@ -1,6 +1,6 @@
 
 <script lang="ts">
-	import { createTimer } from "./state.svelte"
+	import { createSolvesArr, createTimer } from "./state.svelte"
 	import type { PageServerData } from './$types';
 	let { data }: { data: PageServerData } = $props();  
 	import { Button, Dropdown, DropdownItem } from 'flowbite-svelte';
@@ -12,6 +12,7 @@
 	import Timer from './Timer.svelte'
 	import { randomScrambleForEvent } from "cubing/scramble";
 	const time = createTimer();
+	const solves = createSolvesArr();
 	let timerStart: boolean = $state(false)
 	let spacebarPressed: boolean = $state(false)
 	let timeAtStart: number = 0
@@ -19,7 +20,7 @@
 	let scramble: string = $state("")
 	let eventString: string = $state("333")
 	let activeClass = 'text-green-500 dark:text-green-300 hover:text-green-700 dark:hover:text-green-500';
-	
+
 	$effect(() => {
 		if (timerStart) {
 			timeAtStart = new Date().getTime()
@@ -40,7 +41,8 @@
 		if (event.key == " ") {
 			if (timerStart) {
 				timeAtEnd = new Date().getTime()
-				await time.updateScrambleDB(timeAtStart, timeAtEnd, data.user.id, scramble, eventString)
+				await time.updateSolvesDB(timeAtStart, timeAtEnd, data.user.id, scramble, eventString)
+				// solves.updateSolves()
 				await fetchScrambleForEvent(eventString)
 			}
 			
