@@ -203,4 +203,4 @@
     </div>
 </div>
 
-<Footer scramble=""></Footer>
+<Footer></Footer>
