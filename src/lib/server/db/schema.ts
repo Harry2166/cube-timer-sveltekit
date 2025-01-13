@@ -27,7 +27,9 @@ export const solves = sqliteTable('solves', {
 	userId: text('user_id')
 		.notNull()
 		.references(() => user.id),
-	time: text('time').notNull(),
+	minutes: integer('minutes').notNull(),
+	seconds: integer('seconds').notNull(),
+	ms: integer('ms').notNull(),
 	timeRecord: integer('timeRecorded').notNull(),
 	event: text('event_id')
 		.references(() => events.id),

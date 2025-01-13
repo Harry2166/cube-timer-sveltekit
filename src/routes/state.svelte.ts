@@ -44,7 +44,9 @@ export function createTimer() {
 			body: JSON.stringify({
 				scramble, 
 				timeRecorded: endTime,
-				time: `${time.minutes}:${time.seconds}:${time.miliseconds}`,
+				minutes: time.minutes,
+				seconds: time.seconds,
+				ms: time.miliseconds,
 				user_id: user_id,
                 event
 			}),

@@ -11,7 +11,9 @@
         solveId: number;
         scramble: string | null;
         userId: string;
-        time: string;
+        minutes: number;
+        seconds: number;
+        ms: number;
         timeRecord: number;
         event: string | null;
         isDNF: number;
@@ -96,6 +98,29 @@
         }
     }
 
+    function showTime(solve: Solve) {
+        let minutes = solve.minutes
+        let seconds = solve.seconds
+        let ms = solve.ms
+
+        if (solve.isPlusTwo && solve.isDNF) return "DNF (+2)"
+
+        else if (solve.isPlusTwo) {
+            if (solve.isPlusTwo && (seconds + 2 >= 60)) {
+                minutes += 1
+            } else {
+                seconds += 2
+            }
+            return `${minutes}:${seconds}:${ms} (+2)`
+        }
+
+        else if (solve.isDNF) {
+            return "DNF"
+        }
+
+        return `${minutes}:${seconds}:${ms}`
+    }
+
 </script>
 
 <Navbar username={data.navbar_stuff[0].username} user_id={data.navbar_stuff[0].id} scramble={""}></Navbar>
@@ -122,7 +147,7 @@
     <TableBody tableBodyClass="divide-y">
         {#each shownSolves as solve}
         <TableBodyRow>
-            <TableBodyCell>{solve.isDNF ? "DNF" : solve.time}</TableBodyCell>
+            <TableBodyCell>{showTime(solve)}</TableBodyCell>
             <TableBodyCell>{solve.scramble}</TableBodyCell>
             <TableBodyCell>{new Date(solve.timeRecord)}</TableBodyCell>
             <TableBodyCell>

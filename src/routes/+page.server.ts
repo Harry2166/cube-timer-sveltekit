@@ -15,7 +15,17 @@ export const actions: Actions = {
 	updateScrambleDB: async (event) => {
 		const data = await event.request.json();
 		await db.insert(table.events).values({ id: data.event }).onConflictDoNothing()
-		await db.insert(table.solves).values({ scramble: data.scramble, userId: data.user_id, timeRecord: data.timeRecorded, time: data.time, event: data.event, isDNF: 0, isPlusTwo: 0});
+		await db.insert(table.solves).values({ 
+			scramble: data.scramble, 
+			userId: data.user_id, 
+			timeRecord: data.timeRecorded, 
+			minutes: data.minutes, 
+			seconds: data.seconds, 
+			ms: data.ms, 
+			event: data.event, 
+			isDNF: 0, 
+			isPlusTwo: 0
+		});
 		return { success: true };
 	},
 	logout: async (event) => {
