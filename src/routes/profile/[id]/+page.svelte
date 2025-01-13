@@ -4,7 +4,8 @@
 	let { data }: { data: PageServerData } = $props();
 	import Navbar from '../../Navbar.svelte'
 	import Footer from '../../Footer.svelte'
-    import { Button, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, PaginationItem } from 'flowbite-svelte';
+    import { Button, Dropdown, DropdownItem, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, PaginationItem } from 'flowbite-svelte';
+	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 
     type Solve = {
         solveId: number;
@@ -15,14 +16,16 @@
         event: string | null;
     }
 
+    let eventString = $state("333")
     let solves = $state(data.solves)
+    let eventOnlySolves = $derived(solves.filter(sameEvent))
     let rangeOfShownSolves = $state(0)
-    let shownSolves = $derived(solves.slice(rangeOfShownSolves, rangeOfShownSolves + 5))
+    let shownSolves = $derived(eventOnlySolves.slice(rangeOfShownSolves, rangeOfShownSolves + 5))
     let deletedSolveIds = $state([-1])
-    let maxOfGivenRange = $derived(Math.min(rangeOfShownSolves + 5, solves.length))
+    let maxOfGivenRange = $derived(Math.min(rangeOfShownSolves + 5, eventOnlySolves.length))
 
     const increaseRange = () => {
-        if(maxOfGivenRange != solves.length){
+        if(maxOfGivenRange != eventOnlySolves.length){
             rangeOfShownSolves += 5
         }
     }
@@ -35,6 +38,14 @@
 
     function isNotDeleted(solve: Solve){
         return !deletedSolveIds.includes(solve.solveId)
+    }
+    
+    function sameEvent(solve: Solve){
+        return eventString == solve.event
+    }
+
+    function changeEvent(str: string) {
+        eventString = str
     }
 
 	async function deleteTime(solveId: number) {
@@ -58,13 +69,20 @@
 </script>
 
 <Navbar username={data.navbar_stuff[0].username} user_id={data.navbar_stuff[0].id} scramble={""}></Navbar>
-
+<br>
+<div class="flex items-center justify-center gap-4">
+	<Button>Pick Event<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+    <Dropdown>
+        <DropdownItem onclick={() => changeEvent("333")}>3x3</DropdownItem>
+        <DropdownItem onclick={() => changeEvent("444")}>4x4</DropdownItem>
+    </Dropdown>
+</div>
+<br>
 <Table hoverable={true}>
     <TableHead>
     <TableHeadCell>Scramble</TableHeadCell>
     <TableHeadCell>Time</TableHeadCell>
     <TableHeadCell>Recorded At:</TableHeadCell>
-    <!-- <TableHeadCell>Event</TableHeadCell> -->
     <TableHeadCell>
         <span class="sr-only"></span>
     </TableHeadCell>
@@ -96,13 +114,14 @@
         {/if}
     </TableBody>
 </Table>
+<br>
 <div class="flex flex-col items-center justify-center gap-2">
     <div class="text-sm text-gray-700 dark:text-gray-400">
         Showing <span class="font-semibold text-gray-900 dark:text-white">{rangeOfShownSolves + 1}</span>
         to
         <span class="font-semibold text-gray-900 dark:text-white">{maxOfGivenRange}</span>
         of
-        <span class="font-semibold text-gray-900 dark:text-white">{solves.length}</span>
+        <span class="font-semibold text-gray-900 dark:text-white">{eventOnlySolves.length}</span>
         Entries
     </div>
 

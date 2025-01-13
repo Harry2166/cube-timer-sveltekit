@@ -5,7 +5,6 @@
     import { page } from '$app/state';
     import { Avatar, NavHamburger, Navbar, NavLi, NavUl, Dropdown, DropdownHeader, DropdownItem, DropdownDivider } from 'flowbite-svelte';
     let activeUrl = $derived(page.url.pathname);
-	
     async function logout() {
 		const response = await fetch('?/logout', {
 			method: 'POST',

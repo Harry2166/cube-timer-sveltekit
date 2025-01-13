@@ -68,6 +68,7 @@
 
 </script>
 <Navbar username={data.user.username} user_id={data.user.id} {scramble}></Navbar>
+<br>
 <div class="flex items-center justify-center gap-4">
 	<Button>Pick Event<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
 	<Dropdown {activeClass}>
