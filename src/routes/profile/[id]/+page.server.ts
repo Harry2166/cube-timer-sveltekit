@@ -31,4 +31,9 @@ export const actions: Actions = {
 
 		return redirect(302, '/login');
 	},
+	updateTime: async (event) => {
+		const data = await event.request.json();
+        await db.update(table.solves).set({isDNF: data.isDNF, isPlusTwo: data.isPlusTwo}).where(eq(table.solves.solveId, data.solveId)); 
+		return { success: true };
+	},
 };

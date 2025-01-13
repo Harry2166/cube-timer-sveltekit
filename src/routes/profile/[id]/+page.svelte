@@ -14,6 +14,8 @@
         time: string;
         timeRecord: number;
         event: string | null;
+        isDNF: number;
+        isPlusTwo: number;
     }
 
     let eventString = $state("333")
@@ -23,6 +25,7 @@
     let shownSolves = $derived(eventOnlySolves.slice(rangeOfShownSolves, rangeOfShownSolves + 5))
     let deletedSolveIds = $state([-1])
     let maxOfGivenRange = $derived(Math.min(rangeOfShownSolves + 5, eventOnlySolves.length))
+    const plusTwoAdditional = "+2"
 
     const increaseRange = () => {
         if(maxOfGivenRange != eventOnlySolves.length){
@@ -66,6 +69,33 @@
 		}
     }
 
+	function inputUpdateTime(solveId: number, isDNF: number, isPlusTwo: number) {
+        for (let idx = 0; idx < solves.length; idx++) {
+            if (solves[idx].solveId == solveId) {
+                solves[idx].isDNF = isDNF
+                solves[idx].isPlusTwo = isPlusTwo 
+            }
+        }
+    }
+	async function updateTime(solveId: number, isDNF: number, isPlusTwo: number) {
+		const response = await fetch('?/updateTime', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: JSON.stringify({
+                solveId: solveId, 
+                isDNF: isDNF,
+                isPlusTwo: isPlusTwo 
+			}),
+		});
+
+		if (!response.ok) {
+			console.error('Failed to update solve', await response.text());
+        } else {
+			console.log('Updated solve successfully');
+            inputUpdateTime(solveId, isDNF, isPlusTwo)
+        }
+    }
+
 </script>
 
 <Navbar username={data.navbar_stuff[0].username} user_id={data.navbar_stuff[0].id} scramble={""}></Navbar>
@@ -80,9 +110,11 @@
 <br>
 <Table hoverable={true}>
     <TableHead>
-    <TableHeadCell>Scramble</TableHeadCell>
     <TableHeadCell>Time</TableHeadCell>
+    <TableHeadCell>Scramble</TableHeadCell>
     <TableHeadCell>Recorded At:</TableHeadCell>
+    <TableHeadCell>DNF</TableHeadCell>
+    <TableHeadCell>+2</TableHeadCell>
     <TableHeadCell>
         <span class="sr-only"></span>
     </TableHeadCell>
@@ -90,10 +122,23 @@
     <TableBody tableBodyClass="divide-y">
         {#each shownSolves as solve}
         <TableBodyRow>
+            <TableBodyCell>{solve.isDNF ? "DNF" : solve.time}</TableBodyCell>
             <TableBodyCell>{solve.scramble}</TableBodyCell>
-            <TableBodyCell>{solve.time}</TableBodyCell>
             <TableBodyCell>{new Date(solve.timeRecord)}</TableBodyCell>
-            <!-- <TableBodyCell>{solve.event}</TableBodyCell> -->
+            <TableBodyCell>
+                {#if !solve.isDNF}
+                    <Button onclick={async () => {updateTime(solve.solveId, 1, solve.isPlusTwo)}}>DNF</Button>
+                {:else}
+                    <Button color="blue" onclick={async () => {updateTime(solve.solveId, 0, solve.isPlusTwo)}}>DNF</Button>
+                {/if}
+            </TableBodyCell>
+            <TableBodyCell>
+                {#if !solve.isPlusTwo}
+                    <Button onclick={async () => {updateTime(solve.solveId, solve.isDNF, 1)}}>+2</Button>
+                {:else}
+                    <Button color="blue" onclick={async () => {updateTime(solve.solveId, solve.isDNF, 0)}}>+2</Button>
+                {/if}
+            </TableBodyCell>
             <TableBodyCell>
                 <Button onclick={async () => {deleteTime(solve.solveId)}}>Delete</Button>
             </TableBodyCell>
@@ -102,6 +147,8 @@
         {#if shownSolves.length != 5}
             {#each {length: 5 - shownSolves.length} as _,i}
             <TableBodyRow>
+                <TableBodyCell></TableBodyCell>
+                <TableBodyCell></TableBodyCell>
                 <TableBodyCell></TableBodyCell>
                 <TableBodyCell></TableBodyCell>
                 <TableBodyCell></TableBodyCell>
