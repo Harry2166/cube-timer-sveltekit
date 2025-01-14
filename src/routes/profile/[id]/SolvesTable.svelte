@@ -23,20 +23,20 @@
             <TableBodyCell>{new Date(solve.timeRecord)}</TableBodyCell>
             <TableBodyCell>
                 {#if !solve.isDNF}
-                    <Button onclick={async () => {updateTime(solve.solveId, 1, solve.isPlusTwo)}}>DNF</Button>
+                    <Button color="light" onclick={async () => {updateTime(solve.solveId, 1, solve.isPlusTwo)}}>DNF</Button>
                 {:else}
                     <Button color="blue" onclick={async () => {updateTime(solve.solveId, 0, solve.isPlusTwo)}}>DNF</Button>
                 {/if}
             </TableBodyCell>
             <TableBodyCell>
                 {#if !solve.isPlusTwo}
-                    <Button onclick={async () => {updateTime(solve.solveId, solve.isDNF, 1)}}>+2</Button>
+                    <Button color="light" onclick={async () => {updateTime(solve.solveId, solve.isDNF, 1)}}>+2</Button>
                 {:else}
                     <Button color="blue" onclick={async () => {updateTime(solve.solveId, solve.isDNF, 0)}}>+2</Button>
                 {/if}
             </TableBodyCell>
             <TableBodyCell>
-                <Button onclick={async () => {deleteTime(solve.solveId)}}>Delete</Button>
+                <Button color="light" onclick={async () => {deleteTime(solve.solveId)}}>Delete</Button>
             </TableBodyCell>
         </TableBodyRow>
         {/each}
