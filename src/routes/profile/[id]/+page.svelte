@@ -137,7 +137,7 @@
 
 </script>
 
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-1">
     <Navbar username={data.navbar_stuff[0].username} user_id={data.navbar_stuff[0].id} scramble={""}></Navbar>
     <Tabs>  
         {#each eventMap as events}

@@ -57,17 +57,9 @@
     </TableBody>
 </Table>
 <div class="flex flex-col items-center justify-center gap-2">
-    <div class="text-sm text-gray-700 dark:text-gray-400">
-        Showing <span class="font-semibold text-gray-900 dark:text-white">{rangeOfShownSolves + 1}</span>
-        to
-        <span class="font-semibold text-gray-900 dark:text-white">{maxOfGivenRange}</span>
-        of
-        <span class="font-semibold text-gray-900 dark:text-white">{eventOnlySolves.length}</span>
-        Entries
-    </div>
-
     <div class="flex space-x-3 rtl:space-x-reverse">
     <PaginationItem on:click={decreaseRange}>Previous</PaginationItem>
+    <div>{rangeOfShownSolves + 1} to {maxOfGivenRange} out of {eventOnlySolves.length}</div>
     <PaginationItem on:click={increaseRange}>Next</PaginationItem>
     </div>
 </div>
