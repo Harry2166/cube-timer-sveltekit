@@ -25,11 +25,11 @@
             {#each solves as solve, i}
             {#if i == 0}
             <SidebarGroup>
-                    <SidebarItem label={`${solve.minutes}:${solve.seconds.toString().padStart(3, "0")}.${(solve.ms).toString().padStart(3, "0")}`}/>
+                    <SidebarItem label={`${solve.minutes}:${solve.seconds}.${(solve.ms).toString().padStart(3, "0")}`}/>
             </SidebarGroup>
             {:else}
             <SidebarGroup border>
-                    <SidebarItem label={`${solve.minutes}:${solve.seconds.toString().padStart(3, "0")}.${(solve.ms).toString().padStart(3, "0")}`}/>
+                    <SidebarItem label={`${solve.minutes}:${solve.seconds}.${(solve.ms).toString().padStart(3, "0")}`}/>
             </SidebarGroup>
             {/if}
             {/each}
