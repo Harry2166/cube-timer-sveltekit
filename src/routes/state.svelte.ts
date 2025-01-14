@@ -14,20 +14,32 @@ type Solve = {
 
 export function createSolvesArr() {
     let solves: Solve[] = $state([])
+    let eventString: string = $state("333")
+    let solvesToShow: Solve[] = $derived(solves.filter(sameEvent))
     let currMo3: number = $state(0)
     let currAo5: number = $state(0)
     let currAo12: number = $state(0)
 
     function setSolves(givenSolves: Solve[]) {
         solves = givenSolves
-        if (solves.length != 0) {
-            console.log("this is a test")
+        calculateAverages()
+    }
+
+    function setEvent(strEvent: string) {
+        eventString = strEvent
+        calculateAverages()
+    }
+    
+    function calculateAverages() {
+        if (solvesToShow.length != 0) {
             currMo3 = trimmedAvg(3)
             currAo5 = trimmedAvg(5)
             currAo12 = trimmedAvg(12)
-            console.log("currMo3: ")
-            $inspect(currMo3)
         }
+    }
+    
+	function sameEvent(solve: Solve){
+        return eventString == solve.event
     }
 
     async function updateSolves(user_id: string) {
@@ -58,23 +70,17 @@ export function createSolvesArr() {
                 isPlusTwo : newSolveData[mapping["isPlusTwo"]],
             }
             solves.push(newSolve)
-            if (solves.length >= 3) {
-                trimmedAvg(3)
-            }
-            if (solves.length >= 5) {
-                trimmedAvg(5)
-            }
-            if (solves.length >= 12) {
-                trimmedAvg(12)
-            }
+            trimmedAvg(3)
+            trimmedAvg(5)
+            trimmedAvg(12)
 		}           
     }
 
     function convertToSolveTimes (num: number) {
         let arr: number[] = []
-        const startingIdx: number = solves.length - num
-        for (let i = startingIdx; i < solves.length; i++){
-            arr.push(solves[i].minutes * 60000 + solves[i].seconds*1000 + solves[i].ms)
+        const startingIdx: number = solvesToShow.length - num
+        for (let i = startingIdx; i < solvesToShow.length; i++){
+            arr.push(solvesToShow[i].minutes * 60000 + solvesToShow[i].seconds*1000 + solvesToShow[i].ms)
         }
         return arr
     }
@@ -97,7 +103,7 @@ export function createSolvesArr() {
     // }
 
     function trimmedAvg (avgNumber: number){
-        if (solves.length < avgNumber) {
+        if (solvesToShow.length < avgNumber) {
             return 0
         }
         const sortedValues = convertToSolveTimes(avgNumber)
@@ -121,11 +127,12 @@ export function createSolvesArr() {
 
     return {
         get value() {
-            return solves
+            return solves 
         },
         setSolves,
         updateSolves,
         trimmedAvg,
+        setEvent,
         get currMo3() {
             return currMo3
         },
@@ -135,6 +142,9 @@ export function createSolvesArr() {
         get currAo12() {
             return currAo12
         },
+        get solvesToShow() {
+            return solvesToShow
+        }
     }
 
 }

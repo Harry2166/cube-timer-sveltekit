@@ -13,16 +13,17 @@
 	import { randomScrambleForEvent } from "cubing/scramble";
 	import Statistics from "./Statistics.svelte";
 	import Sidebar from "./Sidebar.svelte";
+
+	let eventString: string = $state("333")
 	const time = createTimer();
 	const solves = createSolvesArr();
 	solves.setSolves(data.solves)
-	let reverseSolves = $derived([...solves.value].reverse())
+	let reverseSolves = $derived([...solves.solvesToShow].reverse())
 	let timerStart: boolean = $state(false)
 	let spacebarPressed: boolean = $state(false)
 	let timeAtStart: number = 0
 	let timeAtEnd: number = 0
 	let scramble: string = $state("")
-	let eventString: string = $state("333")
 	let activeClass = 'text-green-500 dark:text-green-300 hover:text-green-700 dark:hover:text-green-500';
 	$effect(() => {
 		if (timerStart) {
@@ -62,6 +63,7 @@
 
 	const changeEvent = async (eventChosen: string) => {
 		eventString = eventChosen
+		solves.setEvent(eventString)
         await fetchScrambleForEvent(eventString);
 	}
 
