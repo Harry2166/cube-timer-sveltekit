@@ -58,16 +58,16 @@ export function createSolvesArr() {
                 isPlusTwo : newSolveData[mapping["isPlusTwo"]],
             }
             solves.push(newSolve)
-            console.log(solves)
-            if (solves.length >= 3) {
-                updateAvg(user_id, trimmedAvg(3), 3)
-            }
-            if (solves.length >= 5) {
-                updateAvg(user_id, trimmedAvg(5), 5)
-            }
-            if (solves.length >= 3) {
-                updateAvg(user_id, trimmedAvg(12), 12)
-            }
+            // console.log(solves)
+            // if (solves.length >= 3) {
+            //     updateAvg(user_id, trimmedAvg(3), 3)
+            // }
+            // if (solves.length >= 5) {
+            //     updateAvg(user_id, trimmedAvg(5), 5)
+            // }
+            // if (solves.length >= 12) {
+                // updateAvg(user_id, trimmedAvg(12), 12)
+            // }
 		}           
     }
 
