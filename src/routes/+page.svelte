@@ -12,9 +12,11 @@
 	import Timer from './Timer.svelte'
 	import { randomScrambleForEvent } from "cubing/scramble";
 	import Statistics from "./Statistics.svelte";
+	import Sidebar from "./Sidebar.svelte";
 	const time = createTimer();
 	const solves = createSolvesArr();
 	solves.setSolves(data.solves)
+	let reverseSolves = $derived([...solves.value].reverse())
 	let timerStart: boolean = $state(false)
 	let spacebarPressed: boolean = $state(false)
 	let timeAtStart: number = 0
@@ -77,6 +79,7 @@
 
 <div class="flex flex-col gap-4">
 	<Navbar username={data.user.username} user_id={data.user.id} {scramble}></Navbar>
+	<Sidebar solves={reverseSolves}></Sidebar>
 	{#if !timerStart}
 		<div class="flex items-center justify-center gap-4">
 			<Button>Pick Event<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
