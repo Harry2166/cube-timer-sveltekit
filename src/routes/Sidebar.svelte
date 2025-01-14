@@ -25,7 +25,7 @@
             {#each solves as solve, i}
             {#if i == 0}
             <SidebarGroup>
-                    <SidebarItem label={`${solve.minutes}:${solve.seconds}.${solve.ms}`}/>
+                    <SidebarItem label={`${solve.minutes}:${solve.seconds}.${(solve.ms)}`}/>
             </SidebarGroup>
             {:else}
             <SidebarGroup border>
