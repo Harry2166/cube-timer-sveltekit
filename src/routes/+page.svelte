@@ -76,30 +76,42 @@
 
 <div class="flex flex-col gap-4">
 	<Navbar username={data.user.username} user_id={data.user.id} {scramble}></Navbar>
-	<div class="flex items-center justify-center gap-4">
-		<Button>Pick Event<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-		<Dropdown {activeClass}>
-			<DropdownItem onclick={() => changeEvent("333")}>3x3</DropdownItem>
-			<DropdownItem onclick={() => changeEvent("444")}>4x4</DropdownItem>
-		</Dropdown>
-		<Button onclick={async () => {await fetchScrambleForEvent(eventString)}}>New Scramble</Button>
-	</div>
+	{#if !timerStart}
+		<div class="flex items-center justify-center gap-4">
+			<Button>Pick Event<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+			<Dropdown {activeClass}>
+				<DropdownItem onclick={() => changeEvent("333")}>3x3</DropdownItem>
+				<!-- <DropdownItem onclick={() => changeEvent("444")}>4x4</DropdownItem> -->
+			</Dropdown>
+			<Button onclick={async () => {await fetchScrambleForEvent(eventString)}}>New Scramble</Button>
+		</div>
 
-	<Timer {timerStart} {time} {spacebarPressed}/>
-	<div class="flex items-center justify-center flex-col">
-		{#if solves.value.length >= 3}
-			<div>Mo3: {roundUpto(solves.currMo3/1000, 3)}</div>
-		{/if}
-		{#if solves.value.length >= 5}
-			<div>Ao5: {roundUpto(solves.currAo5/1000, 3)}</div>
-		{/if}
-		{#if solves.value.length >= 12}
-			<div>Ao12: {roundUpto(solves.currAo12/1000, 3)}</div>
-		{/if}
-	</div>
-    <div class="absolute bottom-20 right-0">
-        <Scramble {scramble}></Scramble>
-    </div>
+		<Timer {timerStart} {time} {spacebarPressed}/>
+		<div class="flex items-center justify-center flex-col">
+			{#if solves.value.length >= 3}
+				<div>Mo3: {roundUpto(solves.currMo3/1000, 3)}</div>
+			{/if}
+			{#if solves.value.length >= 5}
+				<div>Ao5: {roundUpto(solves.currAo5/1000, 3)}</div>
+			{/if}
+			{#if solves.value.length >= 12}
+				<div>Ao12: {roundUpto(solves.currAo12/1000, 3)}</div>
+			{/if}
+		</div>
+		<div class="absolute bottom-20 right-0">
+			<Scramble {scramble}></Scramble>
+		</div>
+	{:else}
+		<div class="flex items-center justify-center gap-4 opacity-0">
+			<Button>Pick Event<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+			<Dropdown {activeClass}>
+				<DropdownItem onclick={() => changeEvent("333")}>3x3</DropdownItem>
+				<!-- <DropdownItem onclick={() => changeEvent("444")}>4x4</DropdownItem> -->
+			</Dropdown>
+			<Button onclick={async () => {await fetchScrambleForEvent(eventString)}}>New Scramble</Button>
+		</div>
+		<Timer {timerStart} {time} {spacebarPressed}/>
+	{/if}
 	<Footer></Footer>
 </div>
 <svelte:window onkeyup={handleKeyUp} onkeydown={handleKeyDown} />
