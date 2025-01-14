@@ -58,16 +58,15 @@ export function createSolvesArr() {
                 isPlusTwo : newSolveData[mapping["isPlusTwo"]],
             }
             solves.push(newSolve)
-            // console.log(solves)
-            // if (solves.length >= 3) {
-            //     updateAvg(user_id, trimmedAvg(3), 3)
-            // }
-            // if (solves.length >= 5) {
-            //     updateAvg(user_id, trimmedAvg(5), 5)
-            // }
-            // if (solves.length >= 12) {
-                // updateAvg(user_id, trimmedAvg(12), 12)
-            // }
+            if (solves.length >= 3) {
+                trimmedAvg(3)
+            }
+            if (solves.length >= 5) {
+                trimmedAvg(5)
+            }
+            if (solves.length >= 12) {
+                trimmedAvg(12)
+            }
 		}           
     }
 
@@ -80,22 +79,22 @@ export function createSolvesArr() {
         return arr
     }
 
-    async function updateAvg(user_id: string, avg: number, avgNumber: number) {
-        const response = await fetch('?/updateAvg', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: JSON.stringify({
-				user_id: user_id,
-                avg: avg,
-                avgNumber: avgNumber
-			}),
-		});
-        if (!response.ok) {
-			console.error('Failed to get from Avg DB', await response.text());
-		} else {
-			console.log('Avg DB gottened');
-		}           
-    }
+    // async function updateAvg(user_id: string, avg: number, avgNumber: number) {
+    //     const response = await fetch('?/updateAvg', {
+	// 		method: 'POST',
+	// 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+	// 		body: JSON.stringify({
+	// 			user_id: user_id,
+    //             avg: avg,
+    //             avgNumber: avgNumber
+	// 		}),
+	// 	});
+    //     if (!response.ok) {
+	// 		console.error('Failed to get from Avg DB', await response.text());
+	// 	} else {
+	// 		console.log('Avg DB gottened');
+	// 	}           
+    // }
 
     function trimmedAvg (avgNumber: number){
         if (solves.length < avgNumber) {

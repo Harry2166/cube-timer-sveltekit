@@ -4,9 +4,9 @@ export const user = sqliteTable('user', {
 	id: text('id').primaryKey(),
 	username: text('username').notNull().unique(),
 	passwordHash: text('password_hash').notNull(),
-	highestMo3: integer('mo3').notNull(),
-	highestAo5: integer('ao5').notNull(),
-	highestAo12: integer('ao12').notNull()
+	// highestMo3: integer('mo3').notNull(),
+	// highestAo5: integer('ao5').notNull(),
+	// highestAo12: integer('ao12').notNull()
 });
 
 export const session = sqliteTable('session', {
