@@ -5,8 +5,7 @@
 	import Navbar from '../../Navbar.svelte'
 	import Footer from '../../Footer.svelte'
 	import SolvesTable from './SolvesTable.svelte'
-    import { Button, Dropdown, DropdownItem, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, PaginationItem } from 'flowbite-svelte';
-	import { ChevronDownOutline } from 'flowbite-svelte-icons';
+    import { Tabs, TabItem } from 'flowbite-svelte';
 
     type Solve = {
         solveId: number;
@@ -19,7 +18,21 @@
         event: string | null;
         isDNF: number;
         isPlusTwo: number;
-    }
+    }    
+    
+    let eventMap = new Map<string, string>([
+        ["222", "2x2x2"],
+        ["333", "3x3x3"],
+        ["444", "4x4x4"],
+        ["555", "5x5x5"],
+        ["666", "6x6x6"],
+        ["777", "7x7x7"],
+        ["megaminx", "megaminx"],
+        ["pyraminx", "pyraminx"],
+        ["square1", "square1"],
+        ["clock", "clock"],
+        ["skewb", "skewb"],
+    ])
 
     let eventString = $state("333")
     let solves = $state(data.solves)
@@ -51,6 +64,7 @@
 
     function changeEvent(str: string) {
         eventString = str
+        rangeOfShownSolves = 0
     }
 
 	async function deleteTime(solveId: number) {
@@ -125,23 +139,22 @@
 
 <div class="flex flex-col gap-4">
     <Navbar username={data.navbar_stuff[0].username} user_id={data.navbar_stuff[0].id} scramble={""}></Navbar>
-    <div class="flex items-center justify-center gap-4">
-        <Button>Pick Event<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-        <Dropdown>
-            <DropdownItem onclick={() => changeEvent("333")}>3x3</DropdownItem>
-            <DropdownItem onclick={() => changeEvent("444")}>4x4</DropdownItem>
-        </Dropdown>
-    </div>
-    <SolvesTable
-        showTime = {(solve: Solve) => showTime(solve)} 
-        updateTime = {async (a: number, b: number, c: number) => updateTime(a,b,c)} 
-        deleteTime = {async (a: number) => deleteTime(a)} 
-        {rangeOfShownSolves} 
-        {maxOfGivenRange} 
-        {eventOnlySolves}
-        {shownSolves}
-        decreaseRange = {() => decreaseRange()} 
-        increaseRange = {() => increaseRange()}>
-    </SolvesTable>
+    <Tabs>  
+        {#each eventMap as events}
+            <TabItem open={events[0] === "333" ? true : false} title={events[1]} on:click={() => changeEvent(events[0])}>
+                <SolvesTable
+                    showTime = {(solve: Solve) => showTime(solve)} 
+                    updateTime = {async (a: number, b: number, c: number) => updateTime(a,b,c)} 
+                    deleteTime = {async (a: number) => deleteTime(a)} 
+                    {rangeOfShownSolves} 
+                    {maxOfGivenRange} 
+                    {eventOnlySolves}
+                    {shownSolves}
+                    decreaseRange = {() => decreaseRange()} 
+                    increaseRange = {() => increaseRange()}>
+                </SolvesTable>
+            </TabItem>
+        {/each}
+    </Tabs>
     <Footer></Footer>
 </div>

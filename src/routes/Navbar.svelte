@@ -29,7 +29,11 @@
 
     <div class="flex items-center">
         <NavUl>
-            <NavLi class="text-2xl">{scramble}</NavLi>
+            {#if scramble != ""}
+                <NavLi class="text-2xl">{scramble}</NavLi>
+            {:else}
+                <NavLi class="text-2xl opacity-0">L2 F' D R D2 R' F U2 B U' L2 B2 R2 U2 R2 U' B2 U2 F2 R2 D</NavLi>
+            {/if}
         </NavUl>
     </div>
 

@@ -1,7 +1,7 @@
 
 <script>
     let {shownSolves, showTime, updateTime, deleteTime, rangeOfShownSolves, maxOfGivenRange, eventOnlySolves, decreaseRange, increaseRange} = $props();
-    import { Button, Dropdown, DropdownItem, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, PaginationItem } from 'flowbite-svelte';
+    import { Button, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, PaginationItem } from 'flowbite-svelte';
 </script>
 
 <Table hoverable={true}>
