@@ -11,6 +11,7 @@
 	import Footer from './Footer.svelte'
 	import Timer from './Timer.svelte'
 	import { randomScrambleForEvent } from "cubing/scramble";
+	import Statistics from "./Statistics.svelte";
 	const time = createTimer();
 	const solves = createSolvesArr();
 	solves.setSolves(data.solves)
@@ -87,20 +88,8 @@
 		</div>
 
 		<Timer {timerStart} {time} {spacebarPressed}/>
-		<div class="flex items-center justify-center flex-col">
-			{#if solves.value.length >= 3}
-				<div>Mo3: {roundUpto(solves.currMo3/1000, 3)}</div>
-			{/if}
-			{#if solves.value.length >= 5}
-				<div>Ao5: {roundUpto(solves.currAo5/1000, 3)}</div>
-			{/if}
-			{#if solves.value.length >= 12}
-				<div>Ao12: {roundUpto(solves.currAo12/1000, 3)}</div>
-			{/if}
-		</div>
-		<div class="absolute bottom-20 right-0">
-			<Scramble {scramble}></Scramble>
-		</div>
+		<Statistics mo3 = {roundUpto(solves.currMo3/1000, 3)} ao5 = {roundUpto(solves.currAo5/1000, 3)} ao12 = {roundUpto(solves.currAo12/1000, 3)}></Statistics>
+		<Scramble {scramble}></Scramble>
 	{:else}
 		<div class="flex items-center justify-center gap-4 opacity-0">
 			<Button>Pick Event<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
