@@ -80,27 +80,13 @@ export function createSolvesArr() {
         let arr: number[] = []
         const startingIdx: number = solvesToShow.length - num
         for (let i = startingIdx; i < solvesToShow.length; i++){
-            arr.push(solvesToShow[i].minutes * 60000 + solvesToShow[i].seconds*1000 + solvesToShow[i].ms)
+            let solveToPut = solvesToShow[i].minutes * 60000 + solvesToShow[i].seconds*1000 + solvesToShow[i].ms
+            if (solvesToShow[i].isPlusTwo) solveToPut + 2000
+            if (solvesToShow[i].isDNF) solveToPut = 1.7976931348623157e+308
+            arr.push(solveToPut)
         }
         return arr
     }
-
-    // async function updateAvg(user_id: string, avg: number, avgNumber: number) {
-    //     const response = await fetch('?/updateAvg', {
-	// 		method: 'POST',
-	// 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-	// 		body: JSON.stringify({
-	// 			user_id: user_id,
-    //             avg: avg,
-    //             avgNumber: avgNumber
-	// 		}),
-	// 	});
-    //     if (!response.ok) {
-	// 		console.error('Failed to get from Avg DB', await response.text());
-	// 	} else {
-	// 		console.log('Avg DB gottened');
-	// 	}           
-    // }
 
     function trimmedAvg (avgNumber: number){
         if (solvesToShow.length < avgNumber) {
@@ -113,8 +99,10 @@ export function createSolvesArr() {
             return minValue < num && num < maxValue
         })
         let value = sum(removedValues) / removedValues.length
+        if (removedValues.includes(1.7976931348623157e+308)) value = 1.7976931348623157e+308 
         if (avgNumber == 3) {
             value = (sum(sortedValues)/3)
+            if (sortedValues.includes(1.7976931348623157e+308)) value = 1.7976931348623157e+308 
             currMo3 = value
         } else if (avgNumber == 5){
             currAo5 = value

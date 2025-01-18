@@ -23,13 +23,37 @@
     <Sidebar>
         <SidebarWrapper>
             {#each solves as solve, i}
-            {#if i == 0}
+            {#if i == 0 && solve.isDNF && solve.isPlusTwo}
             <SidebarGroup>
-                    <SidebarItem label={`${solve.minutes}:${solve.seconds}.${(solve.ms).toString().padStart(3, "0")}`}/>
+                <SidebarItem label="DNF (+2)"/>
+            </SidebarGroup>
+            {:else if i == 0 && solve.isDNF}
+            <SidebarGroup>
+                <SidebarItem label={`DNF`}/>
+            </SidebarGroup>
+            {:else if i == 0 && solve.isPlusTwo}
+            <SidebarGroup>
+                <SidebarItem label={`${solve.minutes}:${solve.seconds + 2}.${(solve.ms).toString().padStart(3, "0")} (+2)`}/>
+            </SidebarGroup>
+            {:else if i == 0}
+            <SidebarGroup>
+                <SidebarItem label={`${solve.minutes}:${solve.seconds}.${(solve.ms).toString().padStart(3, "0")}`}/>
+            </SidebarGroup>
+            {:else if solve.isDNF && solve.isPlusTwo}
+            <SidebarGroup border>
+                <SidebarItem label={`DNF (+2)`}/>
+            </SidebarGroup>
+            {:else if solve.isPlusTwo}
+            <SidebarGroup border>
+                <SidebarItem label={`${solve.minutes}:${solve.seconds+2}.${(solve.ms).toString().padStart(3, "0")} (+2)`}/>
+            </SidebarGroup>
+            {:else if solve.isDNF}
+            <SidebarGroup border>
+                <SidebarItem label={`DNF`}/>
             </SidebarGroup>
             {:else}
             <SidebarGroup border>
-                    <SidebarItem label={`${solve.minutes}:${solve.seconds}.${(solve.ms).toString().padStart(3, "0")}`}/>
+                <SidebarItem label={`${solve.minutes}:${solve.seconds}.${(solve.ms).toString().padStart(3, "0")}`}/>
             </SidebarGroup>
             {/if}
             {/each}
