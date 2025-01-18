@@ -1,10 +1,23 @@
 import { db} from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 import type { RequestEvent } from '@sveltejs/kit'
-import { eq, desc } from 'drizzle-orm';
+import { and, eq, desc } from 'drizzle-orm';
 import { fail, redirect } from '@sveltejs/kit';
 import * as auth from '$lib/server/auth';
-	
+
+export type Solve = {
+    solveId: number;
+    scramble: string | null;
+    userId: string;
+    minutes: number;
+    seconds: number;
+    ms: number;
+    timeRecord: number;
+    event: string | null;
+    isDNF: number;
+    isPlusTwo: number;
+}
+
 export async function updateSolvesDB (event: RequestEvent) {
     const data = await event.request.json();
     await db.insert(table.events).values({ id: data.event }).onConflictDoNothing()
@@ -21,6 +34,7 @@ export async function updateSolvesDB (event: RequestEvent) {
     });
     return { success: true };
 }
+
 export async function getMostRecentSolve (event: RequestEvent) {
     const data = await event.request.json();
     const result = await db.select().from(table.solves).where(eq(table.solves.userId, data.user_id)).orderBy(desc(table.solves.timeRecord)).limit(1)
@@ -52,6 +66,29 @@ export async function logout (event: RequestEvent) {
 export async function deleteTime (event: RequestEvent) {
 	const data = await event.request.json();
     await db.delete(table.solves).where(eq(table.solves.solveId, data.solveId)); 
+    
+    await db.delete(table.mo3).where(eq(data.solveId, table.mo3.solve1id)); 
+    await db.delete(table.mo3).where(eq(data.solveId, table.mo3.solve2id)); 
+    await db.delete(table.mo3).where(eq(data.solveId, table.mo3.solve3id));
+    
+    await db.delete(table.ao5).where(eq(data.solveId, table.ao5.solve1id)); 
+    await db.delete(table.ao5).where(eq(data.solveId, table.ao5.solve2id)); 
+    await db.delete(table.ao5).where(eq(data.solveId, table.ao5.solve3id)); 
+    await db.delete(table.ao5).where(eq(data.solveId, table.ao5.solve4id)); 
+    await db.delete(table.ao5).where(eq(data.solveId, table.ao5.solve5id)); 
+
+    await db.delete(table.ao12).where(eq(data.solveId, table.ao12.solve1id)); 
+    await db.delete(table.ao12).where(eq(data.solveId, table.ao12.solve2id)); 
+    await db.delete(table.ao12).where(eq(data.solveId, table.ao12.solve3id)); 
+    await db.delete(table.ao12).where(eq(data.solveId, table.ao12.solve4id)); 
+    await db.delete(table.ao12).where(eq(data.solveId, table.ao12.solve5id)); 
+    await db.delete(table.ao12).where(eq(data.solveId, table.ao12.solve6id)); 
+    await db.delete(table.ao12).where(eq(data.solveId, table.ao12.solve7id)); 
+    await db.delete(table.ao12).where(eq(data.solveId, table.ao12.solve8id)); 
+    await db.delete(table.ao12).where(eq(data.solveId, table.ao12.solve9id)); 
+    await db.delete(table.ao12).where(eq(data.solveId, table.ao12.solve10id)); 
+    await db.delete(table.ao12).where(eq(data.solveId, table.ao12.solve11id)); 
+    await db.delete(table.ao12).where(eq(data.solveId, table.ao12.solve12id));
     return { success: true };
 }
 
@@ -61,29 +98,92 @@ export async function updateTime (event: RequestEvent) {
     return { success: true };
 }
 
-// updateAvg: async (event) => {
-	// 	const data = await event.request.json();
-	// 	const result = await db.select({
-	// 		mo3Entry: table.user.highestMo3,
-	// 		ao5Entry: table.user.highestAo5,
-	// 		ao12Entry: table.user.highestAo12
-	// 	}).from(table.user).where(eq(table.user.id, data.user_id))
-	// 	let {mo3Entry, ao5Entry, ao12Entry} = result[0]
+async function newAverages(userId: string, event_id: string) {
+    const solvesOfUser = await db.select().from(table.solves).where(eq(table.solves.userId, userId));
+    const convertedSolvesOfUser = convertToSolveTimes(solvesOfUser)
+    const highestAveragesOfUser = await db.select({
+            fastestMo3id: table.highest_averages.mo3id,
+            fastestAo5id: table.highest_averages.ao5id,
+            fastestAo12id: table.highest_averages.ao12id
+        }).from(table.highest_averages).where(eq(table.highest_averages.userid, userId))
+    
+    const {fastestMo3id, fastestAo5id, fastestAo12id} = highestAveragesOfUser[0];
+    let fastestMo3 = 0
+    let actualAo5 = 0
+    let actualAo12 = 0
 
-	// 	if (data.avgNumber == 3) {
-	// 		mo3Entry = getNewAvg(mo3Entry, data.avg)
-	// 	} else if (data.avgNumber == 5) {
-	// 		ao5Entry = getNewAvg(ao5Entry, data.avg)
-	// 	} else if (data.avgNumber == 12) {
-	// 		ao12Entry = getNewAvg(ao12Entry, data.avg)
-	// 	}
-    //     await db.update(table.user).set({highestMo3: mo3Entry, highestAo5: ao5Entry, highestAo12: ao12Entry}).where(eq(table.user.id, data.user_id)); 
-	// 	return { success: true };
-	// },
+    if (fastestMo3id != null) {
+        const Mo3Times = (await db.select().from(table.mo3).where(eq(table.mo3.id, fastestMo3id)))[0];
+        let actualMo3Times = await getAllTimesOfSolveIds([Mo3Times.solve1id, Mo3Times.solve2id, Mo3Times.solve3id]) 
+        fastestMo3 = mean(actualMo3Times)
+    }
 
-    function getNewAvg(orig: number, new_: number) {
+    await db.insert(table.highest_averages).values({ userid: userId, eventid: event_id }).onConflictDoNothing()
+
+    for (let i = 2; i < convertedSolvesOfUser.length; i++){
+        let mo3 = mean(convertedSolvesOfUser.slice(i-2, i+1))
+        let entry = (await db.insert(table.mo3).values({ 
+            userid: userId, 
+            eventid: event_id, 
+            solve1id: solvesOfUser[i-2].solveId,
+            solve2id: solvesOfUser[i-1].solveId,
+            solve3id: solvesOfUser[i].solveId,
+        }).onConflictDoNothing().returning({mo3id: table.mo3.id}))[0]
+        let toInsert = getNewAvg(fastestMo3, mo3)
+        if (toInsert == mo3) {
+            if (entry == null) {
+                entry = (await db.select({mo3id: table.mo3.id}).from(table.mo3).where(and(eq(table.mo3.solve1id, solvesOfUser[i-2].solveId), eq(table.mo3.userid, userId))))[0]
+            }
+            await db.update(table.highest_averages).set({
+                mo3id: entry.mo3id
+            }).where(eq(table.highest_averages.userid, userId))
+        }
+    }
+}
+
+function convertToSolveTimes (solves: Solve[]) {
+    let arr: number[] = []
+    for (let i = 0; i < solves.length; i++){
+        arr.push(solves[i].minutes * 60000 + solves[i].seconds*1000 + solves[i].ms)
+    }
+    return arr
+}
+
+async function getAllTimesOfSolveIds(solves: number[]) {
+    let arr = []
+    for (let i = 0; i < solves.length; i++){
+        let solveData = await db.select().from(table.solves).where(eq(table.solves.solveId, solves[i]))
+        arr.push(solveData[0])
+    }
+    return convertToSolveTimes(arr)
+}
+
+function getNewAvg(orig: number, new_: number) {
 	if (orig == 0) {
 		return new_
 	}
 	return Math.min(new_, orig)
+}
+
+function mean(nums: number[]) {
+    return sum(nums) / 3
+}
+
+function average(nums: number[]) {
+    const maxValue = Math.max(...nums)
+    const minValue = Math.min(...nums)
+    const removedValues = nums.filter((num) => {
+        return minValue < num && num < maxValue
+    })
+
+    return sum(removedValues) / removedValues.length
+
+}
+
+function sum(arr: number[]) {
+    let sum = 0
+    for (let i = 0; i < arr.length; i++) {
+        sum += arr[i]
+    }
+    return sum
 }

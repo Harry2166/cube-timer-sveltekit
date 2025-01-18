@@ -41,11 +41,11 @@ export const mo3 = sqliteTable( 'mo3', {
 		.references(() => user.id),
 	eventid: text('event_id')
 		.references(() => events.id),
-	solve1id: integer('solve1_id')
+	solve1id: integer('solve1_id').notNull()
 		.references(() => solves.solveId),
-	solve2id: integer('solve2_id')
+	solve2id: integer('solve2_id').notNull()
 		.references(() => solves.solveId),
-	solve3id: integer('solve3_id')
+	solve3id: integer('solve3_id').notNull()
 		.references(() => solves.solveId),
 	}
 )
@@ -56,15 +56,15 @@ export const ao5 = sqliteTable( 'ao5', {
 		.references(() => user.id),
 	eventid: text('event_id')
 		.references(() => events.id),
-	solve1id: integer('solve1_id')
+	solve1id: integer('solve1_id').notNull()
 		.references(() => solves.solveId),
-	solve2id: integer('solve2_id')
+	solve2id: integer('solve2_id').notNull()
 		.references(() => solves.solveId),
-	solve3id: integer('solve3_id')
+	solve3id: integer('solve3_id').notNull()
 		.references(() => solves.solveId),
-	solve4id: integer('solve4_id')
+	solve4id: integer('solve4_id').notNull()
 		.references(() => solves.solveId),
-	solve5id: integer('solve5_id')
+	solve5id: integer('solve5_id').notNull()
 		.references(() => solves.solveId),
 	}
 )
@@ -75,43 +75,43 @@ export const ao12 = sqliteTable( 'ao12', {
 		.references(() => user.id),
 	eventid: text('event_id')
 		.references(() => events.id),
-	solve1id: integer('solve1_id')
+	solve1id: integer('solve1_id').notNull()
 		.references(() => solves.solveId),
-	solve2id: integer('solve2_id')
+	solve2id: integer('solve2_id').notNull()
 		.references(() => solves.solveId),
-	solve3id: integer('solve3_id')
+	solve3id: integer('solve3_id').notNull()
 		.references(() => solves.solveId),
-	solve4id: integer('solve4_id')
+	solve4id: integer('solve4_id').notNull()
 		.references(() => solves.solveId),
-	solve5id: integer('solve5_id')
+	solve5id: integer('solve5_id').notNull()
 		.references(() => solves.solveId),
-	solve6id: integer('solve6_id')
+	solve6id: integer('solve6_id').notNull()
 		.references(() => solves.solveId),
-	solve7id: integer('solve7_id')
+	solve7id: integer('solve7_id').notNull()
 		.references(() => solves.solveId),
-	solve8id: integer('solve8_id')
+	solve8id: integer('solve8_id').notNull()
 		.references(() => solves.solveId),
-	solve9id: integer('solve9_id')
+	solve9id: integer('solve9_id').notNull()
 		.references(() => solves.solveId),
-	solve10id: integer('solve10_id')
+	solve10id: integer('solve10_id').notNull()
 		.references(() => solves.solveId),
-	solve11id: integer('solve11_id')
+	solve11id: integer('solve11_id').notNull()
 		.references(() => solves.solveId),
-	solve12id: integer('solve12_id')
+	solve12id: integer('solve12_id').notNull()
 		.references(() => solves.solveId),
 	}
 )
 
-export const highest_averages_per_event = sqliteTable( 'highest_averages_per_event' , {
-		id: integer('id').primaryKey(),
-		highestAverage2x2: integer('2x2_highest_average')
-			.references(() => highest_averages.id),
-		highestAverage3x3: integer('3x3_highest_average')
-			.references(() => highest_averages.id),
-		highestAverage4x4: integer('4x4_highest_average')
-			.references(() => highest_averages.id),
-	}
-)
+// export const highest_averages_per_event = sqliteTable( 'highest_averages_per_event' , {
+// 		id: integer('id').primaryKey(),
+// 		highestAverage2x2: integer('2x2_highest_average')
+// 			.references(() => highest_averages.id),
+// 		highestAverage3x3: integer('3x3_highest_average')
+// 			.references(() => highest_averages.id),
+// 		highestAverage4x4: integer('4x4_highest_average')
+// 			.references(() => highest_averages.id),
+// 	}
+// )
 
 export const highest_averages = sqliteTable('highest_averages', {
 		id: integer('id').primaryKey(),
