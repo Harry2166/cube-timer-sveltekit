@@ -3,7 +3,7 @@ A Rubik's Cube time built in SvelteKit hosted in Vercel and Supabase. It uses Sv
 
 This project is a Rubik's Cube timer that supports the following features:
 - Login and Registration
-- Keeping track of times for the 2x2, 3x3, 4x4, and Skewb events
+- Keeping track of times for the 2x2, 3x3, and Skewb events
 - Select a new scramble for a given puzzle
 - Showing the state of the scrambles
 - Showing the previously recorded times of each user
@@ -24,7 +24,7 @@ In order to use the timer, you just have to press the spacebar **once** and it w
 </p>
 
 <p align="center">
-    <img src="https://github.com/user-attachments/assets/23c2116b-6805-4785-a213-3ab6840740ef" alt="dashboard">
+    <img src="https://github.com/user-attachments/assets/54f96e89-d2b7-415f-9440-17aad5a13449" alt="dashboard">
     <br>
     <b>Profile Dashboard</b>
 </p>
