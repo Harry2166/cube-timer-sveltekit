@@ -23,7 +23,7 @@
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@types/node": "^22.10.5",
 		"autoprefixer": "^10.4.20",
-		"drizzle-kit": "^0.22.0",
+		"drizzle-kit": "^0.30.2",
 		"eslint": "^9.7.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.36.0",
@@ -39,17 +39,19 @@
 		"vite": "^5.4.11"
 	},
 	"dependencies": {
-		"@libsql/client": "^0.9.0",
 		"@node-rs/argon2": "^1.1.0",
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
 		"bits-ui": "^0.22.0",
 		"cube-scrambler": "^1.1.0",
 		"cubing": "^0.51.0",
-		"drizzle-orm": "^0.33.0",
+		"dotenv": "^16.4.7",
+		"drizzle-orm": "^0.38.4",
 		"flowbite": "^2.5.2",
 		"flowbite-svelte": "^0.47.4",
 		"flowbite-svelte-icons": "^2.0.2",
-		"scrambled": "^1.0.2"
+		"postgres": "^3.4.5",
+		"scrambled": "^1.0.2",
+		"supabase": "^2.6.8"
 	}
 }

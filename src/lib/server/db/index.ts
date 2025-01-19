@@ -1,6 +1,8 @@
-import { drizzle } from 'drizzle-orm/libsql';
-import { createClient } from '@libsql/client';
-import { env } from '$env/dynamic/private';
-if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
-const client = createClient({ url: env.DATABASE_URL });
+import { config } from 'dotenv';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
+
+config({ path: '.env' });
+
+const client = postgres(process.env.DATABASE_URL!);
 export const db = drizzle(client);

@@ -1,7 +1,8 @@
 
-<script>
+<script lang="ts">
     let {shownSolves, showTime, updateTime, deleteTime, rangeOfShownSolves, maxOfGivenRange, eventOnlySolves, decreaseRange, increaseRange} = $props();
     import { Button, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, PaginationItem } from 'flowbite-svelte';
+
 </script>
 
 <Table hoverable={true}>
@@ -23,20 +24,20 @@
             <TableBodyCell>{new Date(solve.timeRecord)}</TableBodyCell>
             <TableBodyCell>
                 {#if !solve.isDNF}
-                    <Button color="light" onclick={async () => {updateTime(solve.solveId, 1, solve.isPlusTwo)}}>DNF</Button>
+                    <Button color="light" onclick={async () => {updateTime(solve.solve_id, 1, solve.isPlusTwo)}}>DNF</Button>
                 {:else}
-                    <Button color="blue" onclick={async () => {updateTime(solve.solveId, 0, solve.isPlusTwo)}}>DNF</Button>
+                    <Button color="blue" onclick={async () => {updateTime(solve.solve_id, 0, solve.isPlusTwo)}}>DNF</Button>
                 {/if}
             </TableBodyCell>
             <TableBodyCell>
                 {#if !solve.isPlusTwo}
-                    <Button color="light" onclick={async () => {updateTime(solve.solveId, solve.isDNF, 1)}}>+2</Button>
+                    <Button color="light" onclick={async () => {updateTime(solve.solve_id, solve.isDNF, 1)}}>+2</Button>
                 {:else}
-                    <Button color="blue" onclick={async () => {updateTime(solve.solveId, solve.isDNF, 0)}}>+2</Button>
+                    <Button color="blue" onclick={async () => {updateTime(solve.solve_id, solve.isDNF, 0)}}>+2</Button>
                 {/if}
             </TableBodyCell>
             <TableBodyCell>
-                <Button color="light" onclick={async () => {deleteTime(solve.solveId)}}>Delete</Button>
+                <Button color="light" onclick={async () => {deleteTime(solve.solve_id)}}>Delete</Button>
             </TableBodyCell>
         </TableBodyRow>
         {/each}

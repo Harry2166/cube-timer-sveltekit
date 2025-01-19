@@ -1,12 +1,12 @@
 
 type Solve = {
-    solveId: number;
+    solve_id: number;
     scramble: string | null;
     userId: string;
     minutes: number;
     seconds: number;
     ms: number;
-    timeRecord: number;
+    timeRecord: Date;
     event: string | null;
     isDNF: number;
     isPlusTwo: number;
@@ -58,7 +58,7 @@ export function createSolvesArr() {
             const newSolveData = JSON.parse(responseData.data)
             const mapping = newSolveData[0]
             const newSolve: Solve = {
-                solveId : newSolveData[mapping["solveId"]],
+                solve_id : newSolveData[mapping["solveId"]],
                 scramble : newSolveData[mapping["scramble"]],
                 userId : newSolveData[mapping["userId"]],
                 minutes : newSolveData[mapping["minutes"]],

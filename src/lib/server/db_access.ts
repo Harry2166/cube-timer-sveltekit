@@ -8,10 +8,11 @@ import * as auth from '$lib/server/auth';
 export async function updateSolvesDB (event: RequestEvent) {
     const data = await event.request.json();
     await db.insert(table.events).values({ id: data.event }).onConflictDoNothing()
-    await db.insert(table.solves).values({ 
+    await db.insert(table.solves).values({
+        solve_id: table.solves.solve_id.default,
         scramble: data.scramble, 
         userId: data.user_id, 
-        timeRecord: data.timeRecorded, 
+        timeRecord: new Date(data.timeRecorded), 
         minutes: data.minutes, 
         seconds: data.seconds, 
         ms: data.ms, 
@@ -27,7 +28,7 @@ export async function getMostRecentSolve (event: RequestEvent) {
     const solve = result[0]
     return {
         userId: solve.userId,
-        solveId: solve.solveId,
+        solveId: solve.solve_id,
         scramble: solve.scramble,
         minutes: solve.minutes,
         seconds: solve.seconds,
@@ -51,12 +52,12 @@ export async function logout (event: RequestEvent) {
 
 export async function deleteTime (event: RequestEvent) {
 	const data = await event.request.json();
-    await db.delete(table.solves).where(eq(table.solves.solveId, data.solveId)); 
+    await db.delete(table.solves).where(eq(table.solves.solve_id, data.solveId)); 
     return { success: true };
 }
 
 export async function updateTime (event: RequestEvent) {
     const data = await event.request.json();
-    await db.update(table.solves).set({isDNF: data.isDNF, isPlusTwo: data.isPlusTwo}).where(eq(table.solves.solveId, data.solveId)); 
+    await db.update(table.solves).set({isDNF: data.isDNF, isPlusTwo: data.isPlusTwo}).where(eq(table.solves.solve_id, data.solveId)); 
     return { success: true };
 }

@@ -8,13 +8,13 @@
     import { Tabs, TabItem } from 'flowbite-svelte';
 
     type Solve = {
-        solveId: number;
+        solve_id: number;
         scramble: string | null;
         userId: string;
         minutes: number;
         seconds: number;
         ms: number;
-        timeRecord: number;
+        timeRecord: Date;
         event: string | null;
         isDNF: number;
         isPlusTwo: number;
@@ -55,7 +55,7 @@
     }
 
     function isNotDeleted(solve: Solve){
-        return !deletedSolveIds.includes(solve.solveId)
+        return !deletedSolveIds.includes(solve.solve_id)
     }
     
     function sameEvent(solve: Solve){
@@ -87,7 +87,7 @@
 
 	function inputUpdateTime(solveId: number, isDNF: number, isPlusTwo: number) {
         for (let idx = 0; idx < solves.length; idx++) {
-            if (solves[idx].solveId == solveId) {
+            if (solves[idx].solve_id == solveId) {
                 solves[idx].isDNF = isDNF
                 solves[idx].isPlusTwo = isPlusTwo 
             }

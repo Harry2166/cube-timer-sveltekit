@@ -50,9 +50,6 @@
 				await fetchScrambleForEvent(eventString)
 			}
 			
-			if (!spacebarPressed) {
-				spacebarPressed = !spacebarPressed
-			}
 		}
 	}
 
