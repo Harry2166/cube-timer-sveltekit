@@ -7,7 +7,6 @@ import * as auth from '$lib/server/auth';
 	
 export async function updateSolvesDB (event: RequestEvent) {
     const data = await event.request.json();
-    await db.insert(table.events).values({ id: data.event }).onConflictDoNothing()
     await db.insert(table.solves).values({
         solve_id: table.solves.solve_id.default,
         scramble: data.scramble, 
