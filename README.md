@@ -1,38 +1,37 @@
-# sv
+# Harry2166's Rubiks Cube Timer in SvelteKit
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## A Rubik's Cube time built in SvelteKit that is currently hosted in Vercel and Supabase.
+This project is a Rubik's Cube timer that supports the following features:
+- Login and Registration
+- Keeping track of times for the 2x2, 3x3, 4x4, and Skewb events
+- Select a new scramble for a given puzzle
+- Showing the state of the scrambles
+- Showing the previously recorded times of each user
+- Keep track of penalties that a solve may have incurred
 
-## Creating a project
+This project is heavily inspired by <a href="https://cstimer.net">cstimer</a>.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Getting Started
+Visit the cube timer <a href="https://harry2166-cube-timer.vercel.app">here.</a>
 
-```bash
-# create a new project in the current directory
-npx sv create
+In order to use the timer, you just have to press the spacebar **once** and it will immediately start the timer. In order to check all the solves that were done, visit your dashboard found on the upper right hand corner of the timer page. This is also the page where you also flag penalties related to the times.
 
-# create a new project in my-app
-npx sv create my-app
-```
+## Screenshots
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/bc0b422c-5d9f-4887-b965-bb0bf14d6188" alt="timer">
+    <br>
+    <b>Timer</b>
+</p>
 
-## Developing
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/23c2116b-6805-4785-a213-3ab6840740ef" alt="dashboard">
+    <br>
+    <b>Profile Dashboard</b>
+</p>
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Upcoming Features
+- Support for more events
+- Keeping track of all your averages
+- Profile customization
+- Have an inspection timer
