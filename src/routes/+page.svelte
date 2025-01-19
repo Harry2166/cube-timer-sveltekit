@@ -84,7 +84,6 @@
 			<Dropdown {activeClass}>
 				<DropdownItem onclick={() => changeEvent("222")}>2x2</DropdownItem>
 				<DropdownItem onclick={() => changeEvent("333")}>3x3</DropdownItem>
-				<DropdownItem onclick={() => changeEvent("444")}>4x4</DropdownItem>
 				<DropdownItem onclick={() => changeEvent("skewb")}>Skewb</DropdownItem>
 			</Dropdown>
 			<Button color="dark" onclick={async () => {await fetchScrambleForEvent(eventString)}}>New Scramble</Button>
