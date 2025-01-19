@@ -18,7 +18,7 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.2.3",
 		"@eslint/js": "^9.17.0",
-		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/adapter-vercel": "^5.5.2",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@types/node": "^22.10.5",
@@ -44,7 +44,6 @@
 		"@oslojs/encoding": "^1.1.0",
 		"bits-ui": "^0.22.0",
 		"cube-scrambler": "^1.1.0",
-		"cubing": "^0.51.0",
 		"dotenv": "^16.4.7",
 		"drizzle-orm": "^0.38.4",
 		"flowbite": "^2.5.2",

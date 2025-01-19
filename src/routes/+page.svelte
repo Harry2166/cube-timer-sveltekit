@@ -10,7 +10,6 @@
 	import Navbar from './Navbar.svelte'
 	import Footer from './Footer.svelte'
 	import Timer from './Timer.svelte'
-	import { randomScrambleForEvent } from "cubing/scramble";
 	import Statistics from "./Statistics.svelte";
 	import Sidebar from "./Sidebar.svelte";
 
@@ -53,7 +52,8 @@
 	}
 
     async function fetchScrambleForEvent(event: string): Promise<void> {
-        const result = await randomScrambleForEvent(event);
+		const { randomScrambleForEvent } = await import('https://cdn.cubing.net/v0/js/cubing/scramble');
+		const result = await randomScrambleForEvent(event);
         scramble = result.toString(); 
     }
 

@@ -1,7 +1,7 @@
 
 <script lang="ts">
+    import("https://cdn.cubing.net/v0/js/cubing/twisty");
     let {scramble, eventString} = $props();
-    import { TwistyPlayer } from "cubing/twisty";
 
     let eventMap = new Map<string, string>([
         ["222", "2x2x2"],
