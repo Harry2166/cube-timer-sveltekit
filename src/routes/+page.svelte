@@ -83,8 +83,10 @@
 		<div class="flex items-center justify-center gap-4">
 			<Button color="dark">Pick Event<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
 			<Dropdown {activeClass}>
+				<DropdownItem onclick={() => changeEvent("222")}>2x2</DropdownItem>
 				<DropdownItem onclick={() => changeEvent("333")}>3x3</DropdownItem>
 				<DropdownItem onclick={() => changeEvent("444")}>4x4</DropdownItem>
+				<DropdownItem onclick={() => changeEvent("skewb")}>Skewb</DropdownItem>
 			</Dropdown>
 			<Button color="dark" onclick={async () => {await fetchScrambleForEvent(eventString)}}>New Scramble</Button>
 		</div>
@@ -96,8 +98,7 @@
 		<div class="flex items-center justify-center gap-4 opacity-0">
 			<Button>Pick Event<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
 			<Dropdown {activeClass}>
-				<DropdownItem onclick={() => changeEvent("333")}>3x3</DropdownItem>
-				<DropdownItem onclick={() => changeEvent("444")}>4x4</DropdownItem>
+				<DropdownItem onclick={() => changeEvent("222")}>2x2</DropdownItem>
 			</Dropdown>
 			<Button onclick={async () => {await fetchScrambleForEvent(eventString)}}>New Scramble</Button>
 		</div>
