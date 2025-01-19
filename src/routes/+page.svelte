@@ -49,7 +49,6 @@
 				await solves.updateSolves(data.user.id)
 				await fetchScrambleForEvent(eventString)
 			}
-			
 		}
 	}
 
