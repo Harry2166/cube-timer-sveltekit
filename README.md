@@ -1,6 +1,6 @@
 # Harry2166's Rubiks Cube Timer in SvelteKit
+A Rubik's Cube time built in SvelteKit hosted in Vercel and Supabase. It uses Svelte's Flowbite component library for its frontend. 
 
-## A Rubik's Cube time built in SvelteKit that is currently hosted in Vercel and Supabase.
 This project is a Rubik's Cube timer that supports the following features:
 - Login and Registration
 - Keeping track of times for the 2x2, 3x3, 4x4, and Skewb events
