@@ -36,7 +36,7 @@
 
     let eventString = $state("333")
     let solves = $state(data.solves)
-    let eventOnlySolves = $derived(solves.filter(sameEvent))
+    let eventOnlySolves = $derived(solves.filter(sameEvent).reverse())
     let rangeOfShownSolves = $state(0)
     let shownSolves = $derived(eventOnlySolves.slice(rangeOfShownSolves, rangeOfShownSolves + 5))
     let deletedSolveIds = $state([-1])
